@@ -1,0 +1,56 @@
+---
+name: "Publish swimlane-environment-validator"
+
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+  push:
+    branches: [ main ]
+  release:
+    types:
+      - published
+
+env:
+  PACKAGE_NAME: swimlane-environment-validator
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+          architecture: 'x64'
+
+      - name: Install Requirements
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install --upgrade -r requirements.txt
+
+      - name: Compile script into binary
+        working-directory: swimlane_environment_validator
+        run: |
+          pyinstaller swimlane_environment_validator.py --onefile
+
+      - name: Set output
+        working-directory: swimlane_environment_validator/dist
+        id: vars
+        run: |
+          echo ::set-output name=tag::${GITHUB_REF#refs/*/}
+          echo ::set-output name=branch_name::${GITHUB_REF#refs/*/}
+          echo ::set-output name=version::$(./swimlane_environment_validator version)
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: "swimlane_environment_validator-${{ steps.vars.outputs.version }}"
+          path: swimlane_environment_validator/dist/swimlane_environment_validator
+          retention-days: 5

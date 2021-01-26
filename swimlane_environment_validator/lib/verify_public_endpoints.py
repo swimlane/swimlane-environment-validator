@@ -1,0 +1,37 @@
+import requests
+
+import lib.config as config
+import lib.log_handler as log_handler
+
+logger = log_handler.setup_logger()
+
+def get_endpoint(endpoint_url, valid_header=False):
+    logger.info('Checking connectivity to {}'.format(endpoint_url))
+    
+    endpoint_result = {
+        "result" : "Skipped"
+    }
+
+    r = requests.get(endpoint_url, allow_redirects=False) 
+    logger.debug(r.status_code)
+
+    endpoint_result['status_code'] = r.status_code
+
+    if r.status_code in [200, 301, 302, 403]:
+        logger.info('Response from {} is ok'.format(endpoint_url))
+        endpoint_result['result'] = "Passed"
+    else:
+        logger.error('Response from {} is not ok'.format(endpoint_url))
+        endpoint_result['result'] = "Failed"
+
+    return endpoint_result
+
+
+def check_endpoints(PUBLIC_ENDPOINTS):
+    results = {}
+
+    for endpoint in PUBLIC_ENDPOINTS:
+        r = get_endpoint(endpoint)
+        results[endpoint] = r
+
+    return results

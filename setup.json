@@ -1,0 +1,10 @@
+
+{
+    "version": "0.0.1",
+    "name": "swimlane_environment_validator",
+    "description": "Validate an environment for the use with the Swimlane Platform Installer",
+    "author": "Swimlane",
+    "url": "https://swimlane.com/knowledge-center/install",
+    "author_email": "info@swimlane.com",
+    "license": ""
+  }

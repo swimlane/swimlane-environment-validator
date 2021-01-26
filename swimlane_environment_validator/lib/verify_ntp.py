@@ -1,0 +1,50 @@
+#!/usr/bin/env python3
+import lib.config as config
+import lib.log_handler as log_handler
+import subprocess
+from shutil import which
+
+logger = log_handler.setup_logger()
+
+def check_service_running(service):
+    p =  subprocess.Popen(["systemctl", "is-active",  service], stdout=subprocess.PIPE)
+    (output, err) = p.communicate()
+    output = output.decode('utf-8')
+
+    if output == "active":
+        logger.debug('{} is active'.format(service))
+        return True
+    else:
+        logger.debug('{} is inactive'.format(service))
+        return False
+
+def check_service_enabled(service):
+    p =  subprocess.Popen(["systemctl", "is-enabled",  service], stdout=subprocess.PIPE)
+    (output, err) = p.communicate()
+    output = output.decode('utf-8')
+
+    if output == "enabled":
+        logger.debug('{} is enabled'.format(service))
+        return True
+    else:
+        logger.debug('{} is disabled'.format(service))
+        return False
+
+def check_service_binary(service):
+    return which(service) is not None
+
+def get_service_status():
+    results = {}
+    for ntp_executable in config.NTP_EXECUTABLES:
+        results[ntp_executable] = {}
+        results[ntp_executable]['running'] = False
+        results[ntp_executable]['enabled'] = False
+
+        if check_service_binary(ntp_executable):
+            results[ntp_executable]['installed'] = True
+            results[ntp_executable]['running'] = check_service_running(ntp_executable)
+            results[ntp_executable]['enabled'] = check_service_enabled(ntp_executable)
+        else:
+            results[ntp_executable]['installed'] = False
+
+    return results
