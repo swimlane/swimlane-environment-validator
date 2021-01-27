@@ -20,8 +20,7 @@ setup(
     author_email="info@swimlane.com",
     classifiers=[
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.6",
-        "Programming Language :: Python :: 3.7"
+        "Programming Language :: Python :: 3.5"
     ],
     packages=["swimlane_environment_validator", "swimlane_environment_validator.lib"],
     include_package_data=True,
