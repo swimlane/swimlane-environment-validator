@@ -95,6 +95,7 @@ NTP_EXECUTABLES = [
 UNALLOWED_EXECUTABLES = [
     "docker",
     "ctr",
+    "containerd",
     "kubelet"
 ]
 
