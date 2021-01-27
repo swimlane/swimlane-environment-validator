@@ -16,6 +16,7 @@ import swimlane_environment_validator.lib.verify_pip as verify_pip
 import swimlane_environment_validator.lib.verify_ntp as verify_ntp
 import swimlane_environment_validator.lib.verify_public_endpoints as verify_public_endpoints
 import swimlane_environment_validator.lib.check_proxy_vars as check_proxy_vars
+import swimlane_environment_validator.lib.verify_executables as verify_executables
 
 import swimlane_environment_validator.lib.http_listener as http_listener
 
@@ -35,7 +36,8 @@ check_results = {
         "public_endpoint_checks": {},
         "ntp_checks": {},
         "hostnamectl_checks": {},
-        "proxy_env_var_checks": {}
+        "proxy_env_var_checks": {},
+        "disallowed_executables": {}
     }
 }
 
@@ -103,6 +105,9 @@ def main():
                         config.arguments.lb_fqdn
                     )
                 )
+
+        if config.arguments.verify_executables:
+            check_results['checks']['disallowed_executables'].update(verify_executables.check_installed_executables(config.UNALLOWED_EXECUTABLES))
 
         logger.debug('Cleaning up temporary directory')
         shutil.rmtree(tmp_path)
