@@ -57,7 +57,7 @@ jobs:
         if: ${{ github.event_name == 'pull_request' || github.event_name == 'push' }}
         uses: actions/upload-artifact@v2
         with:
-          name: swimlane-environment-validator-${{ steps.vars.outputs.tag }}.tar.gz"
+          name: swimlane-environment-validator-${{ steps.vars.outputs.tag }}.tar.gz
           path: swimlane-environment-validator.tar.gz
           retention-days: 5
 
@@ -77,4 +77,4 @@ jobs:
         with:
           upload_url: ${{ steps.get_release.outputs.upload_url }}
           asset_path: swimlane-environment-validator.tar.gz
-          asset_name: swimlane-environment-validator-${{ steps.vars.outputs.tag }}.tar.gz"
+          asset_name: swimlane-environment-validator-${{ steps.vars.outputs.tag }}.tar.gz
