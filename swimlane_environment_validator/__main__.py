@@ -40,10 +40,6 @@ check_results = {
 }
 
 def main():
-    if config.arguments.command == 'version':
-        print(config.VERSION)
-        sys.exit(0)
-
     logger.info('Starting Swimlane SPI environment verification...')
 
     if config.arguments.command == 'verify':

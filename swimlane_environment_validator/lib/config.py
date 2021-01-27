@@ -13,8 +13,6 @@ def str2bool(v):
     else:
         raise argparse.ArgumentTypeError('Boolean value expected.')
 
-VERSION = "0.0.1"
-
 parser = argparse.ArgumentParser()
 commands = parser.add_subparsers(dest='command')
 
