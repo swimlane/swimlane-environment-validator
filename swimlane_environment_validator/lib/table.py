@@ -43,14 +43,14 @@ def print_table(checks):
         print("")
 
     if config.arguments.verify_pip:
-        print("|{}|".format('-'*101))
-        print("| {:^99} |".format('Pip Checks'))
-        print("|{}|".format('-'*101))
+        print("|{}|".format('-'*65))
+        print("| {:^63} |".format('Pip Checks'))
+        print("|{}|".format('-'*65))
         print("| {:^50} | {:^10} |".format('Message', 'Results')) 
-        print("|{}|".format('-'*51))   
+        print("|{}|".format('-'*65))   
         for key, value in checks['pip_checks'].items():
             print("| {:50} | {:10} |".format(str(value['message']), str(value['results'])))
-        print("|{}|".format('_'*101))
+        print("|{}|".format('_'*65))
 
         print("")
 
