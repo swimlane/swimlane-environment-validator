@@ -34,7 +34,6 @@ jobs:
         id: vars
         run: |
           echo ::set-output name=tag::${GITHUB_REF#refs/*/}
-          echo ::set-output name=branch_name::${GITHUB_REF#refs/*/}
 
       - name: Install Requirements
         run: |
@@ -45,12 +44,21 @@ jobs:
         run: |
           python setup.py sdist
 
+      - name: Pull down extra packages for offline installs
+        working-directory: dist
+        run: |
+          python -m pip download -r ../requirements.txt
+
+      - name: Create archive for artifact storage
+        run: |
+          tar -zcvf swimlane-environment-validator.tar.gz dist
+
       - name: Upload Artifact for Development
         if: ${{ github.event_name == 'pull_request' || github.event_name == 'push' }}
         uses: actions/upload-artifact@v2
         with:
-          name: "swimlane_environment_validator-${{ steps.vars.outputs.tag }}.tar.gz"
-          path: swimlane_environment_validator/dist/swimlane_environment_validator-${{ steps.vars.outputs.tag }}.tar.gz
+          name: swimlane-environment-validator-${{ steps.vars.outputs.tag }}.tar.gz"
+          path: swimlane-environment-validator.tar.gz
           retention-days: 5
 
       - name: Get release
@@ -68,5 +76,5 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.get_release.outputs.upload_url }}
-          asset_path: swimlane_environment_validator/dist/swimlane_environment_validator-${{ steps.vars.outputs.tag }}.tar.gz
-          asset_name: "swimlane_environment_validator-${{ steps.vars.outputs.tag }}"
+          asset_path: swimlane-environment-validator.tar.gz
+          asset_name: swimlane-environment-validator-${{ steps.vars.outputs.tag }}.tar.gz"
