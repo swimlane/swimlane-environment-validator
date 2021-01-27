@@ -87,3 +87,10 @@ def print_table(checks):
         for key, value in checks['load_balancer_port_checks'].items():
             print("| {:50} | {:80} | {:15} | {:10} |".format(key, value['message'], str(value['status_code']), str(value['result'])))
         print("|{}|".format('_'*166))
+
+    print("|{}|".format('-'*150))
+    print("|{:^150}|".format('!!! Additional Manual Checks !!!'))
+    print("|{:^150}|".format('Each SPI Node must have a unique hostname as determined by hostnamectl.'))
+    print("|{:^150}|".format('Each SPI Node should have DNS-resolvable hostnames.'))
+    print("|{:^150}|".format('Each SPI Node must have reliable and consistent time. An NTP daemon is recommended.'))
+    print("|{}|".format('_'*150))
