@@ -1,5 +1,6 @@
 import os
 import logging
+import swimlane_environment_validator.lib.config as config
 
 def setup_logger():
     logger = logging.getLogger(__name__)
@@ -14,7 +15,11 @@ def setup_logger():
 
     # Grab the logging level from environment var
     # if not found, et log level to warning
-    log_level = os.environ.get('LOG_LEVEL', 'WARN').upper()
+    
+    if config.arguments.debug:
+        log_level = "DEBUG"
+    else:
+        log_level = "INFO"
     logger.setLevel(log_level)
 
     # Configure the format of the logs
