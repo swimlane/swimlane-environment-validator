@@ -35,8 +35,7 @@ jobs:
       - name: Set output
         id: vars
         run: |
-          env
-          if [ $GH_EVENT_NAME = "pull_request" ]; then
+          if [ $GITHUB_EVENT_NAME = "pull_request" ]; then
              echo ::set-output name=tag::${GITHUB_HEAD_REF}
           else
              echo ::set-output name=tag::${GITHUB_REF#refs/*/}
