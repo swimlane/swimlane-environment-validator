@@ -67,6 +67,18 @@ def print_table(checks):
 
         print("")
 
+    if config.arguments.verify_executables:
+        print("|{}|".format('-'*100))
+        print("|{:^100}|".format('Disallowed Executables'))
+        print("|{}|".format('-'*100))
+        print("| {:^15} | {:^15} | {:^53} |{:^8}|".format('Executable', 'Path ','Message', 'Result'))    
+        print("|{}|".format('-'*100))
+        for key, value in checks['disallowed_executables'].items():
+            print("| {:15} | {:15} | {:53} | {:8} |".format(key, value['path'], value['message'], value['result'] ))
+        print("|{}|".format('_'*100))
+
+        print("")
+
     if config.arguments.verify_public_endpoints and not config.arguments.offline:
         print("|{}|".format('-'*89))
         print("|{:^89}|".format('Public Endpoints'))

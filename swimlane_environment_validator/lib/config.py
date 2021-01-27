@@ -45,6 +45,9 @@ verify_action.add_argument("--offline", type=str2bool, default=False,
 verify_action.add_argument("--verify-public-endpoints", type=str2bool, default=True,
                         help="Run checks against public endpoints to verify accessibility.")
 
+verify_action.add_argument("--verify-executables", type=str2bool, default=True,
+                        help="Verify if any disallowed executables are installed.")
+
 verify_action.add_argument("--verify-pip", type=str2bool, default=True,
                         help="Test connectivity to PyPi. Requires pip and virtualenv to be installed.")
 
@@ -85,7 +88,14 @@ PUBLIC_ENDPOINTS = [
 ]
 
 NTP_EXECUTABLES = [
-    "ntpd"
+    "ntpd",
+    "chrony"
+]
+
+UNALLOWED_EXECUTABLES = [
+    "docker",
+    "ctr",
+    "kubelet"
 ]
 
 #Terminal ANSI color codes
