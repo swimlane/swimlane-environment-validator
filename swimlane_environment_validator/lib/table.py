@@ -35,10 +35,10 @@ def print_table(checks):
         print("|{}|".format('-'*149))
         print("| {:^147} |".format('Directory Sizes'))
         print("|{}|".format('-'*149))
-        print("| {:^15} | {:^20} | {:^20} | {:^70} | {:^10} |".format('Directory', 'Total Space Size', 'Percentage Free', 'Message', 'Result'))
+        print("| {:^15} | {:^20} | {:^20} | {:^70} | {:^10} |".format('Directory', 'Total Space Size', 'Percentage Used', 'Message', 'Result'))
         print("|{}|".format('-'*149))   
         for key, value in checks['directory_size_checks'].items():
-            print("| {:15} | {:20} | {:20} | {:70} | {:10} |".format(key, str(value['Total Space Size']), str(value['Percentage Free']), str(value['message']), str(value['result']) ))
+            print("| {:15} | {:20} | {:20} | {:70} | {:10} |".format(key, str(value['Total Space Size']), str(value['Percentage Used']), str(value['message']), str(value['result']) ))
         print("|{}|".format('_'*149))
 
         print("")

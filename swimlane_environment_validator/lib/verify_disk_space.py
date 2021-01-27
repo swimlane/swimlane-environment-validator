@@ -23,7 +23,7 @@ def check_directory_size(directory, minimum_bytes):
         results[directory]['result'] = "Failed"
         results[directory]['message'] = "{} could not be found".format(directory)
         results[directory]['Total Space Size'] = "-"
-        results[directory]['Percentage Free'] = "-"
+        results[directory]['Percentage Used'] = "-"
         return results
 
     logger.debug('Partition size \nTotal: {total}\nUsed: {used}\nFree: {free}, Percentage Used: {percentage}'.format(
@@ -35,7 +35,7 @@ def check_directory_size(directory, minimum_bytes):
     )
 
     results[directory]['Total Space Size'] = ( total / 1024 / 1024 / 1024 )
-    results[directory]['Percentage Free'] = ( ( used / total ) * 100 )
+    results[directory]['Percentage Used'] = ( ( used / total ) * 100 )
 
 
     if total >= minimum_bytes:
