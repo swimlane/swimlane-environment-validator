@@ -19,7 +19,7 @@ def setup_logger():
     if config.arguments.debug:
         log_level = "DEBUG"
     else:
-        log_level = "INFO"
+        log_level = os.environ.get('LOG_LEVEL', 'INFO').upper()
     logger.setLevel(log_level)
 
     # Configure the format of the logs
