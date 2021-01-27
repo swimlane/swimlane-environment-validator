@@ -111,7 +111,8 @@ def main():
         table.print_table(check_results['checks'])
 
     if config.arguments.command == 'listener':
-        logger.warning('not yet implemented')
+        http_listener_threads = http_listener.start_listener_threads()
+        input("Web Listeners are running, press enter to exit.")
 
 if __name__ == "__main__":
     main()
