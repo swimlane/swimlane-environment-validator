@@ -8,56 +8,56 @@ import swimlane_environment_validator.lib.verify_load_balancer as verify_load_ba
 def print_table(checks):
 
 
-    print("|{}|".format('-'*63))
-    print("| {:^61} |".format('Environment Info'))
-    print("|{}|".format('-'*63))
-    print("| {:^15} | {:^30} | {:^10} |".format('Proxy Var','Message','Result'))
-    print("|{}|".format('-'*63))    
+    print("|{}|".format('-'*80))
+    print("|{:^80}|".format('Environment Info'))
+    print("|{}|".format('-'*80))
+    print("| {:^15} | {:^60} |".format('Proxy Var','Message'))
+    print("|{}|".format('-'*80))    
     for key, value in checks['proxy_env_var_checks'].items():
-        print("| {:15} | {:30} | {:10} |".format(key, value['message'], value['result']))
-    print("|{}|".format('_'*63))
+        print("| {:15} | {:60} |".format(key, value['message']))
+    print("|{}|".format('_'*80))
 
     print("")
 
     if config.arguments.verify_disk_space:
-        print("|{}|".format('-'*83))
-        print("| {:^81} |".format('Mount Info'))
-        print("|{}|".format('-'*83))
-        print("| {:^15} | {:^50} | {:^10} |".format('Directory', 'Message', 'Result'))    
-        print("|{}|".format('-'*83))
+        print("|{}|".format('-'*79))
+        print("|{:^79}|".format('Mount Info'))
+        print("|{}|".format('-'*79))
+        print("| {:^15} | {:^50} |{:^8}|".format('Directory', 'Message', 'Result'))    
+        print("|{}|".format('-'*79))
         for key, value in checks['is_own_partition_checks'].items():
-            print("| {:15} | {:50} | {:10} |".format(key, value['message'], value['result'] ))
-        print("|{}|".format('_'*83))
+            print("| {:15} | {:50} | {:8} |".format(key, value['message'], value['result'] ))
+        print("|{}|".format('_'*79))
 
         print("")
 
     if config.arguments.verify_disk_space:
-        print("|{}|".format('-'*149))
-        print("| {:^147} |".format('Directory Sizes'))
-        print("|{}|".format('-'*149))
-        print("| {:^15} | {:^20} | {:^20} | {:^70} | {:^10} |".format('Directory', 'Total Space Size', 'Percentage Used', 'Message', 'Result'))
-        print("|{}|".format('-'*149))   
+        print("|{}|".format('-'*145))
+        print("|{:^145}|".format('Directory Sizes'))
+        print("|{}|".format('-'*145))
+        print("| {:^15} | {:^20} | {:^20} | {:^70} |{:^8}|".format('Directory', 'Total Space Size', 'Percentage Used', 'Message', 'Result'))
+        print("|{}|".format('-'*145))   
         for key, value in checks['directory_size_checks'].items():
-            print("| {:15} | {:20} | {:20} | {:70} | {:10} |".format(key, str(value['Total Space Size']), str(value['Percentage Used']), str(value['message']), str(value['result']) ))
-        print("|{}|".format('_'*149))
+            print("| {:15} | {:20} | {:20} | {:70} | {:8} |".format(key, str(value['Total Space Size']), str(value['Percentage Used']), str(value['message']), str(value['result']) ))
+        print("|{}|".format('_'*145))
 
         print("")
 
     if config.arguments.verify_pip:
-        print("|{}|".format('-'*65))
-        print("| {:^63} |".format('Pip Checks'))
-        print("|{}|".format('-'*65))
-        print("| {:^50} | {:^10} |".format('Message', 'Results')) 
-        print("|{}|".format('-'*65))   
+        print("|{}|".format('-'*86))
+        print("|{:^86}|".format('Pip Checks'))
+        print("|{}|".format('-'*86))
+        print("| {:^75} |{:^8}|".format('Message', 'Result')) 
+        print("|{}|".format('-'*86))   
         for key, value in checks['pip_checks'].items():
-            print("| {:50} | {:10} |".format(str(value['message']), str(value['results'])))
-        print("|{}|".format('_'*65))
+            print("| {:75} | {:8} |".format(str(value['message']), str(value['results'])))
+        print("|{}|".format('_'*86))
 
         print("")
 
     if config.arguments.verify_ntp:
         print("|{}|".format('-'*51))
-        print("| {:^49} |".format('Time Syncing Services'))
+        print("|{:^51}|".format('Time Syncing Services'))
         print("|{}|".format('-'*51))
         print("| {:^10} | {:^10} | {:^10} | {:^10} |".format('Service', 'Installed', 'Enabled', 'Running')) 
         print("|{}|".format('-'*51))   
@@ -68,25 +68,25 @@ def print_table(checks):
         print("")
 
     if config.arguments.verify_public_endpoints and not config.arguments.offline:
-        print("|{}|".format('-'*93))
-        print("| {:^91} |".format('Public Endpoints'))
-        print("|{}|".format('-'*93))
-        print("| {:^60} | {:^15} | {:^10} |".format('Endpoint', 'Status Code', 'Result'))
-        print("|{}|".format('-'*93))    
+        print("|{}|".format('-'*89))
+        print("|{:^89}|".format('Public Endpoints'))
+        print("|{}|".format('-'*89))
+        print("| {:^60} | {:^15} |{:^8}|".format('Endpoint', 'Status Code', 'Result'))
+        print("|{}|".format('-'*89))    
         for key, value in checks['public_endpoint_checks'].items():
-            print("| {:60} | {:15} | {:10} |".format(key, str(value['status_code']), str(value['result'])))
-        print("|{}|".format('_'*93))
+            print("| {:60} | {:15} | {:8} |".format(key, str(value['status_code']), str(value['result'])))
+        print("|{}|".format('_'*89))
 
 
     if config.arguments.verify_lb and verify_load_balancer.verify_dns_resolution(config.arguments.lb_fqdn):
-        print("|{}|".format('-'*166))
-        print("| {:^164} |".format('Load Balancer Endpoint'))
-        print("|{}|".format('-'*166))
-        print("| {:^50} | {:^80} | {:^15} | {:^10} |".format('Endpoint', 'Message', 'Status Code', 'Result'))
-        print("|{}|".format('-'*166))    
+        print("|{}|".format('-'*162))
+        print("|{:^162}|".format('Load Balancer Endpoint'))
+        print("|{}|".format('-'*162))
+        print("| {:^50} | {:^80} | {:^15} |{:^8}|".format('Endpoint', 'Message', 'Status Code', 'Result'))
+        print("|{}|".format('-'*162))    
         for key, value in checks['load_balancer_port_checks'].items():
-            print("| {:50} | {:80} | {:15} | {:10} |".format(key, value['message'], str(value['status_code']), str(value['result'])))
-        print("|{}|".format('_'*166))
+            print("| {:50} | {:80} | {:15} | {:8} |".format(key, value['message'], str(value['status_code']), str(value['result'])))
+        print("|{}|".format('_'*162))
 
     print("|{}|".format('-'*150))
     print("|{:^150}|".format('!!! Additional Manual Checks !!!'))

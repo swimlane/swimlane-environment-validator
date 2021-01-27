@@ -37,14 +37,22 @@ def get_service_status():
     results = {}
     for ntp_executable in config.NTP_EXECUTABLES:
         results[ntp_executable] = {}
-        results[ntp_executable]['running'] = False
-        results[ntp_executable]['enabled'] = False
+        results[ntp_executable]['running'] = "{}False{}".format(config.FAIL, config.ENDC)
+        results[ntp_executable]['enabled'] = "{}False{}".format(config.FAIL, config.ENDC)
 
         if check_service_binary(ntp_executable):
-            results[ntp_executable]['installed'] = True
-            results[ntp_executable]['running'] = check_service_running(ntp_executable)
-            results[ntp_executable]['enabled'] = check_service_enabled(ntp_executable)
+            results[ntp_executable]['installed'] = "{}True{}".format(config.OK, config.ENDC)
+            if check_service_running(ntp_executable):
+                results[ntp_executable]['running'] = "{}True{}".format(config.OK, config.ENDC)
+            else:
+                results[ntp_executable]['running'] = "{}False{}".format(config.FAIL, config.ENDC)
+
+            if check_service_running(ntp_executable):
+                results[ntp_executable]['enabled'] = "{}True{}".format(config.OK, config.ENDC)
+            else:
+                results[ntp_executable]['enabled'] = "{}False{}".format(config.FAIL, config.ENDC)
+
         else:
-            results[ntp_executable]['installed'] = False
+            results[ntp_executable]['installed'] = "{}False{}".format(config.FAIL, config.ENDC)
 
     return results

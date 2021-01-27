@@ -41,7 +41,7 @@ def attempt_pip_install():
     }
 
     if not create_virtual_env():
-        result['pip']['results'] = "Failed"
+        result['pip']['results'] = "{}Failed{}".format(config.FAIL, config.ENDC)
         result['pip']['message'] = "Failed to configure the venv to test pip with.."
         return result
 
@@ -59,11 +59,11 @@ def attempt_pip_install():
 
     if sp != 0:
         logger.error("Something went wrong with the pip download command..")
-        result['pip']['results'] = "Failed"
+        result['pip']['results'] = "{}Failed{}".format(config.FAIL, config.ENDC)
         result['pip']['message'] = "Something went wrong with the pip download command."
     else:
         logger.info("Was able to download example-package from the configured pip repository!")
-        result['pip']['results'] = "Passed"
+        result['pip']['results'] = "{}Passed{}".format(config.OK, config.ENDC)
         result['pip']['message'] = "example-package was able to be downloaded from the configured PyPi server."
     
     return result

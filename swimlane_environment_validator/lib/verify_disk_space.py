@@ -20,7 +20,7 @@ def check_directory_size(directory, minimum_bytes):
         total, used, free = shutil.disk_usage(directory)
     except FileNotFoundError:
         logger.error('{} cannot be found.'.format(directory))
-        results[directory]['result'] = "Failed"
+        results[directory]['result'] = "{}Failed{}".format(config.FAIL, config.ENDC)
         results[directory]['message'] = "{} could not be found".format(directory)
         results[directory]['Total Space Size'] = "-"
         results[directory]['Percentage Used'] = "-"
@@ -40,10 +40,10 @@ def check_directory_size(directory, minimum_bytes):
 
     if total >= minimum_bytes:
         logger.info('{} has at least {} bytes available.'.format(directory, minimum_bytes))
-        results[directory]['result'] = "Passed"
+        results[directory]['result'] = "{}Passed{}".format(config.OK, config.ENDC)
     else:
         logger.error('{} has less {} bytes available.'.format(directory, minimum_bytes))
-        results[directory]['result'] = "Failed"
+        results[directory]['result'] = "{}Failed{}".format(config.FAIL, config.ENDC)
         results[directory]['message'] = "{} is not large enough to meet minimum requirements.".format(directory)
     
     return results
@@ -58,10 +58,10 @@ def check_if_mount(directory):
     is_mount = os.path.ismount(directory)
 
     if is_mount:
-        results[directory]['result'] = "Passed"
+        results[directory]['result'] = "{}Passed{}".format(config.OK, config.ENDC)
         results[directory]['message'] = "{} is a mount.".format(directory)
     else:
-        results[directory]['result'] = "Warning"
+        results[directory]['result'] = "{}Failed{}".format(config.FAIL, config.ENDC)
         results[directory]['message'] = "{} is not a mounted directory.".format(directory)        
 
     return results

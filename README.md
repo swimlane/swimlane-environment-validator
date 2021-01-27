@@ -98,3 +98,4 @@ optional arguments:
 * https://production.cloudflare.docker.com always returns a 403 status code. Until we discover an endpoint that allows unauthenticated GET requests, it will remain this way.
 * Verification of TLS certificates for use with SPI and Swimlane has not yet been implemented.
 * The verify-pip check requires outside binaries, python3 and venv.
+* Table formatting is a mess and does not have dynamically generated width
