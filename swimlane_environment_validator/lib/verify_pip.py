@@ -9,16 +9,21 @@ import swimlane_environment_validator.lib.log_handler as log_handler
 logger = log_handler.setup_logger()
 
 def create_virtual_env():
-    sp = subprocess.check_call(
-                                [
-                                    "python3",
-                                    "-m",
-                                    "venv",
-                                    "pip-install-test-venv"
-                                ],
-                                stdout=subprocess.DEVNULL, 
-                                stderr=subprocess.STDOUT
-                              )
+
+    try:
+        sp = subprocess.check_call(
+                                    [
+                                        "python3",
+                                        "-m",
+                                        "venv",
+                                        "pip-install-test-venv"
+                                    ],
+                                    stdout=subprocess.DEVNULL, 
+                                    stderr=subprocess.STDOUT
+                                  )
+    except FileNotFoundError:
+        logger.error("Something went wrong with trying to create a virtualenv. Is python3 and python3-venv installed?")
+        return False
 
     if config.arguments.pip_config:
         shutil.copyfile(config.arguments.pip_config, 'pip-install-test-venv/pip.conf')

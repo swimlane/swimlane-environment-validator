@@ -46,13 +46,14 @@ jobs:
         working-directory: swimlane_environment_validator
         run: |
           pyinstaller __main__.py --onefile
+          mv dist/__main__ dist/swimlane-environment-validator
 
       - name: Upload Artifact for Development
         if: ${{ github.event_name == 'pull_request' || github.event_name == 'push' }}
         uses: actions/upload-artifact@v2
         with:
           name: swimlane-environment-validator-${{ steps.vars.outputs.tag }}
-          path: swimlane_environment_validator/dist/__main__
+          path: swimlane_environment_validator/dist/swimlane-environment-validator
           retention-days: 5
 
       - name: Get release
@@ -70,5 +71,5 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.get_release.outputs.upload_url }}
-          asset_path: swimlane_environment_validator/dist/__main__
+          asset_path: swimlane_environment_validator/dist/swimlane-environment-validator
           asset_name: swimlane-environment-validator-${{ steps.vars.outputs.tag }}
