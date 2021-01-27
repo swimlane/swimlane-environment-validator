@@ -98,3 +98,8 @@ optional arguments:
 * https://production.cloudflare.docker.com always returns a 403 status code. Until we discover an endpoint that allows unauthenticated GET requests, it will remain this way.
 * Verification of TLS certificates for use with SPI and Swimlane has not yet been implemented.
 * The verify-pip check requires outside binaries, python3 and venv.
+
+
+## Credits
+
+`swimlane-environment-validator` is a [Swimlane](https://swimlane.com) open-source project; we believe in giving back to the open-source community by sharing some of the projects we build for our application. Swimlane is an automated cyber security operations and incident response platform that enables cyber security teams to leverage threat intelligence, speed up incident response and automate security operations.
