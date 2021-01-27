@@ -14,7 +14,7 @@ def setup_logger():
 
     # Grab the logging level from environment var
     # if not found, et log level to warning
-    log_level = os.environ.get('LOG_LEVEL', 'INFO').upper()
+    log_level = os.environ.get('LOG_LEVEL', 'WARN').upper()
     logger.setLevel(log_level)
 
     # Configure the format of the logs

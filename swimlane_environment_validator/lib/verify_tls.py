@@ -1,6 +1,6 @@
 # #!/usr/bin/env python3
-# import lib.config as config
-# import lib.log_handler as log_handler
+# import swimlane_environment_validator.lib.config as config
+# import swimlane_environment_validator.lib.log_handler as log_handler
 
 # import OpenSSL.crypto
 # from Crypto.Util import asn1

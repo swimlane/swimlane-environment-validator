@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-import lib.config as config
-import lib.log_handler as log_handler
+import swimlane_environment_validator.lib.config as config
+import swimlane_environment_validator.lib.log_handler as log_handler
 import json
 import requests
 import socket
@@ -9,7 +9,7 @@ logger = log_handler.setup_logger()
 
 def verify_dns_resolution(lb_fqdn):
     try:
-        logger.info("Load Balancer FQDN resolved to: {}".format(socket.gethostbyname(lb_fqdn)))
+        logger.debug("Load Balancer FQDN resolved to: {}".format(socket.gethostbyname(lb_fqdn)))
         return True
     except:
         logger.info("Unable to resolve {}".format(lb_fqdn))
@@ -21,7 +21,9 @@ def verify_port_connectivity(port, lb_fqdn):
     result_name = "{}:{}".format(lb_fqdn, port)
     result = {
         result_name: {
-            "result" : "Skipped"
+            "result" : "Skipped",
+            "message" : "-",
+            "status_code" : "-"
         }
     }
     

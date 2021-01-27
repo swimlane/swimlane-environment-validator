@@ -6,20 +6,20 @@ import time
 import sys
 import json
 
-import lib.config as config
-import lib.log_handler as log_handler
+import swimlane_environment_validator.lib.config as config
+import swimlane_environment_validator.lib.log_handler as log_handler
 
-import lib.verify_disk_space as verify_disk_space
-import lib.verify_load_balancer as verify_load_balancer
-import lib.verify_tls as verify_tls
-import lib.verify_pip as verify_pip
-import lib.verify_ntp as verify_ntp
-import lib.verify_public_endpoints as verify_public_endpoints
-import lib.check_proxy_vars as check_proxy_vars
+import swimlane_environment_validator.lib.verify_disk_space as verify_disk_space
+import swimlane_environment_validator.lib.verify_load_balancer as verify_load_balancer
+import swimlane_environment_validator.lib.verify_tls as verify_tls
+import swimlane_environment_validator.lib.verify_pip as verify_pip
+import swimlane_environment_validator.lib.verify_ntp as verify_ntp
+import swimlane_environment_validator.lib.verify_public_endpoints as verify_public_endpoints
+import swimlane_environment_validator.lib.check_proxy_vars as check_proxy_vars
 
-import lib.http_listener as http_listener
+import swimlane_environment_validator.lib.http_listener as http_listener
 
-import lib.table as table
+import swimlane_environment_validator.lib.table as table
 
 logger = log_handler.setup_logger()
 
@@ -39,8 +39,7 @@ check_results = {
     }
 }
 
-if __name__ == "__main__":
-
+def main():
     if config.arguments.command == 'version':
         print(config.VERSION)
         sys.exit(0)
@@ -86,7 +85,7 @@ if __name__ == "__main__":
             check_results['checks']['ntp_checks'].update(verify_ntp.get_service_status())
 
         if config.arguments.verify_lb:
-            if verify_load_balancer.verify_dns_resolution():
+            if verify_load_balancer.verify_dns_resolution(config.arguments.lb_fqdn):
                 http_listener_threads = http_listener.start_listener_threads()
                 logger.info('Sleeping for {} seconds to allow LB to see that we are live'.format(config.arguments.lb_delay_period))
                 time.sleep(config.arguments.lb_delay_period)
@@ -117,3 +116,6 @@ if __name__ == "__main__":
 
     if config.arguments.command == 'listener':
         logger.warning('not yet implemented')
+
+if __name__ == "__main__":
+    main()

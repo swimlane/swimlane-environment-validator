@@ -1,5 +1,5 @@
-import lib.config as config
-import lib.log_handler as log_handler
+import swimlane_environment_validator.lib.config as config
+import swimlane_environment_validator.lib.log_handler as log_handler
 from os import environ
 
 logger = log_handler.setup_logger()

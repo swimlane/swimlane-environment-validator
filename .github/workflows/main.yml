@@ -38,7 +38,7 @@ jobs:
       - name: Compile script into binary
         working-directory: swimlane_environment_validator
         run: |
-          pyinstaller swimlane_environment_validator.py --onefile
+          python setup.py sdist
 
       - name: Set output
         working-directory: swimlane_environment_validator/dist
@@ -46,14 +46,14 @@ jobs:
         run: |
           echo ::set-output name=tag::${GITHUB_REF#refs/*/}
           echo ::set-output name=branch_name::${GITHUB_REF#refs/*/}
-          echo ::set-output name=version::$(./swimlane_environment_validator version)
+          echo ::set-output name=version::$(python ./swimlane_environment_validator version)
 
       - name: Upload Artifact for Development
         if: ${{ github.event_name == 'pull_request' || github.event_name == 'push' }}
         uses: actions/upload-artifact@v2
         with:
-          name: "swimlane_environment_validator-${{ steps.vars.outputs.version }}"
-          path: swimlane_environment_validator/dist/swimlane_environment_validator
+          name: "swimlane_environment_validator-${{ steps.vars.outputs.version }}.tar.gz"
+          path: swimlane_environment_validator/dist/swimlane_environment_validator-${{ steps.vars.outputs.version }}.tar.gz
           retention-days: 5
 
       - name: Get release
@@ -71,6 +71,5 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.get_release.outputs.upload_url }}
-          asset_path: swimlane_environment_validator/dist/swimlane_environment_validator
+          asset_path: swimlane_environment_validator/dist/swimlane_environment_validator-${{ steps.vars.outputs.version }}.tar.gz
           asset_name: "swimlane_environment_validator-${{ steps.vars.outputs.version }}"
-          asset_content_type: application/octet-stream
