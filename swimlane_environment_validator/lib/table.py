@@ -4,6 +4,7 @@ import swimlane_environment_validator.lib.config as config
 import swimlane_environment_validator.lib.log_handler as log_handler
 import swimlane_environment_validator.lib.verify_load_balancer as verify_load_balancer
 
+
 def print_table(checks):
 
 

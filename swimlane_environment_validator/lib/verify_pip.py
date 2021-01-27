@@ -42,7 +42,7 @@ def attempt_pip_install():
 
     if not create_virtual_env():
         result['pip']['results'] = "Failed"
-        result['pip']'message'] = "Failed to configure the venv to test pip with.."
+        result['pip']['message'] = "Failed to configure the venv to test pip with.."
         return result
 
     sp = subprocess.check_call(
