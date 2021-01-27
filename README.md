@@ -69,6 +69,30 @@ optional arguments:
                         Enable verification of disk space and partitions
 ```
 
+## Listener subcommand:
+
+Sometimes for debugging your load balancer it is useful to have a daemon that listens on the ports that the SPI needs for communication.
+
+The listener will run on port 6443, 8800, and 443 (if ran as root) until the user presses the enter key to exit:
+
+```
+$ ./swimlane-environment-validator listener
+```
+
+The addresses that are listened for can be changed via these optional arguments:
+
+```
+optional arguments:
+  -h, --help            show this help message and exit
+  --k8s-port K8S_PORT   Port to listen for the Kubernetes Load Balancer check.
+                        Default is 6443.
+  --web-port WEB_PORT   Port to listen for the HTTPS Load Balancer check.
+                        Default is 443.
+  --spi-port SPI_PORT   Port to listen for the Swimlane Platform Installer
+                        Load Balancer check. Default is 8800.
+```
+
+
 ## Known Issues:
 * https://storage.googleapis.com always fails the endpoint test with 400. Until we discover an endpoint that allows unauthenticated GET requests, it will remain this way.
 * https://production.cloudflare.docker.com always returns a 403 status code. Until we discover an endpoint that allows unauthenticated GET requests, it will remain this way.
