@@ -24,6 +24,9 @@ parser.add_argument("--web-port", type=int, default=443,
                         help="Port to listen for the HTTPS Load Balancer check. Default is 443.")
 parser.add_argument("--spi-port", type=int, default=8800,
                         help="Port to listen for the Swimlane Platform Installer Load Balancer check. Default is 8800.")
+parser.add_argument("--debug", type=str2bool, default=False,
+                        help="Set to True to enable debug mode.")
+
 
 verify_action = commands.add_parser('verify', help="Run the environment verifier.")
 
@@ -40,7 +43,7 @@ verify_action.add_argument("--additional-node-fqdn", action='append',
                         help="Node FQDNs. May be specified multiple times for multiple nodes. Default is the current hosts' FQDN.")
 
 verify_action.add_argument("--offline", type=str2bool, default=False,
-                        help="Run in Offline mode")
+                        help="Run in Offline mode.")
 
 verify_action.add_argument("--verify-public-endpoints", type=str2bool, default=True,
                         help="Run checks against public endpoints to verify accessibility.")
@@ -58,14 +61,14 @@ verify_action.add_argument("--verify-swimlane-tls-certificate", type=str, defaul
                         help="Test connectivity to PyPi using the specified pip config. Requires pip and virtualenv to be installed.")
 
 verify_action.add_argument("--swimlane-certificate", type=str, default=False,
-                        help="File path for the TLS Certificate for Swimlane")
+                        help="File path for the TLS Certificate for Swimlane.")
 verify_action.add_argument("--swimlane-key", type=str, default=False,
-                        help="File path for the TLS Certificate Key for Swimlane")
+                        help="File path for the TLS Certificate Key for Swimlane.")
 
 verify_action.add_argument("--verify-disk-space", type=str2bool, default=True,
-                        help="Enable verification of disk space and partitions")
+                        help="Enable verification of disk space and partitions.")
 
-listener_action = commands.add_parser('listener', help="Load Balancer Listener daemon")
+listener_action = commands.add_parser('listener', help="Load Balancer Listener daemon.")
 
 arguments = parser.parse_args()
 
