@@ -18,7 +18,9 @@ env:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    # When using pyinstaller, you want to compile on the oldest OS available
+    # in order to abuse the backwards-comptabile nature of GLIBC
+    runs-on: ubuntu-16.04
     steps:
 
       - name: Check out code
@@ -27,7 +29,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v2
         with:
-          python-version: '3.5'
+          python-version: '3.x'
           architecture: 'x64'
 
       - name: Set output
@@ -41,24 +43,16 @@ jobs:
           python -m pip install --upgrade -r requirements.txt
 
       - name: Compile script into binary
+        working-directory: swimlane_environment_validator
         run: |
-          python setup.py sdist
-
-      - name: Pull down extra packages for offline installs
-        working-directory: dist
-        run: |
-          python -m pip download -r ../requirements.txt
-
-      - name: Create archive for artifact storage
-        run: |
-          tar -zcvf swimlane-environment-validator.tar.gz dist
+          pyinstaller __main__.py --onefile
 
       - name: Upload Artifact for Development
         if: ${{ github.event_name == 'pull_request' || github.event_name == 'push' }}
         uses: actions/upload-artifact@v2
         with:
-          name: swimlane-environment-validator-${{ steps.vars.outputs.tag }}.tar.gz
-          path: swimlane-environment-validator.tar.gz
+          name: swimlane-environment-validator-${{ steps.vars.outputs.tag }}
+          path: swimlane_environment_validator/dist/__main__
           retention-days: 5
 
       - name: Get release
@@ -76,5 +70,5 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.get_release.outputs.upload_url }}
-          asset_path: swimlane-environment-validator.tar.gz
-          asset_name: swimlane-environment-validator-${{ steps.vars.outputs.tag }}.tar.gz
+          asset_path: swimlane_environment_validator/dist/__main__
+          asset_name: swimlane-environment-validator-${{ steps.vars.outputs.tag }}
