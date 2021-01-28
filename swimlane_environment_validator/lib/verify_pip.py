@@ -11,7 +11,7 @@ logger = log_handler.setup_logger()
 def create_virtual_env():
 
     try:
-        sp = subprocess.check_call(
+        sp = subprocess.Popen(
                                     [
                                         "python3",
                                         "-m",
@@ -21,6 +21,8 @@ def create_virtual_env():
                                     stdout=subprocess.DEVNULL, 
                                     stderr=subprocess.STDOUT
                                   )
+
+        streamdata = sp.communicate()[0]
     except FileNotFoundError:
         logger.error("Something went wrong with trying to create a virtualenv. Is python3 and python3-venv installed?")
         return False
@@ -28,7 +30,7 @@ def create_virtual_env():
     if config.arguments.pip_config:
         shutil.copyfile(config.arguments.pip_config, 'pip-install-test-venv/pip.conf')
 
-    if sp != 0:
+    if sp.returncode != 0:
         logger.error("Something went wrong with trying to create a virtualenv. Is virtualenv installed?")
         return False
     else:
@@ -45,7 +47,7 @@ def attempt_pip_install():
         result['pip']['message'] = "Failed to configure the venv to test pip with.."
         return result
 
-    sp = subprocess.check_call(
+    sp = subprocess.Popen(
                                 [
                                     "pip-install-test-venv/bin/python",
                                     "-m",
@@ -57,7 +59,8 @@ def attempt_pip_install():
                                 stderr=subprocess.STDOUT
                               )
 
-    if sp != 0:
+    streamdata = sp.communicate()[0]
+    if sp.returncode != 0:
         logger.error("Something went wrong with the pip download command..")
         result['pip']['results'] = "{}Failed{}".format(config.FAIL, config.ENDC)
         result['pip']['message'] = "Something went wrong with the pip download command."
