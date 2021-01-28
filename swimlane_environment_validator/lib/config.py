@@ -111,6 +111,12 @@ WARNING = '\033[93m'
 FAIL = '\033[91m'
 ENDC = '\033[0m'
 
+LB_CONNECTIVITY_PORTS = [
+    arguments.k8s_port,
+    arguments.web_port,
+    arguments.spi_port
+]
+
 INTRA_CLUSTER_PORTS = [
     2379,
     2380,

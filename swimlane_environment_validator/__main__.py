@@ -81,27 +81,10 @@ def main():
 
         if config.arguments.verify_lb:
             if verify_load_balancer.verify_dns_resolution(config.arguments.lb_fqdn):
-                http_listener_threads = http_listener.start_lb_listener_threads()
+                http_listener.start_lb_listener_threads()
                 logger.info('Sleeping for {} seconds to allow LB to see that we are live'.format(config.arguments.lb_delay_period))
                 time.sleep(config.arguments.lb_delay_period)
-                check_results['checks']['load_balancer_port_checks'].update(
-                    verify_load_balancer.verify_port_connectivity(
-                        config.arguments.k8s_port,
-                        config.arguments.lb_fqdn
-                    )
-                )
-                check_results['checks']['load_balancer_port_checks'].update(
-                    verify_load_balancer.verify_port_connectivity(
-                        config.arguments.web_port,
-                        config.arguments.lb_fqdn
-                    )
-                )
-                check_results['checks']['load_balancer_port_checks'].update(
-                    verify_load_balancer.verify_port_connectivity(
-                        config.arguments.spi_port,
-                        config.arguments.lb_fqdn
-                    )
-                )
+                check_results['checks']['load_balancer_port_checks'].update(verify_load_balancer.verify_port_connectivity(config.arguments.lb_fqdn))
 
         if config.arguments.verify_executables:
             check_results['checks']['disallowed_executables'].update(verify_executables.check_installed_executables(config.UNALLOWED_EXECUTABLES))
