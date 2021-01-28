@@ -17,7 +17,7 @@ def get_endpoint(endpoint_url, valid_header=False):
 
     endpoint_result['status_code'] = r.status_code
 
-    if r.status_code in [200, 301, 302, 403]:
+    if r.status_code in [200, 301, 302]:
         logger.info('Response from {} is ok'.format(endpoint_url))
         endpoint_result['result'] = "{}Passed{}".format(config.OK, config.ENDC)
     else:

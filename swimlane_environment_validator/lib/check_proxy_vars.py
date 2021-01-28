@@ -16,20 +16,20 @@ def check_proxy_vars():
 
     results = {
         "HTTP_PROXY": {
+            "message": check_var('HTTP_PROXY'),
             "result": "-",
-            "message": check_var('HTTP_PROXY')
         },
         "HTTPS_PROXY": {
+            "message": check_var('HTTPS_PROXY'),
             "result": "-",
-            "message": check_var('HTTPS_PROXY')
         },
         "http_proxy": {
+            "message": check_var('http_proxy'),
             "result": "-",
-            "message": check_var('http_proxy')
         },
         "https_proxy": {
+            "message": check_var('https_proxy'),
             "result": "-",
-            "message": check_var('https_proxy')
         }
     }
 
