@@ -124,3 +124,17 @@ INTRA_CLUSTER_PORTS = [
     32500,
     32767
 ]
+
+# Directory name, minimum space in bytes
+DIRECTORY_SIZES_CHECK = {
+    "/var/openebs": (300 * 1024 * 1024 * 1024 ),
+    "/var/lib/docker": (100 * 1024 * 1024 * 1024 ),
+    "/opt": (50 * 1024 * 1024 * 1024 ),
+    "/": (50 * 1024 * 1024 * 1024 )
+}
+
+DIRECTORY_IS_MOUNT_CHECK = [
+    "/var/openebs",
+    "/var/lib/docker",
+    "/opt"
+]

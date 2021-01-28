@@ -68,15 +68,10 @@ def main():
             )
 
         if config.arguments.verify_disk_space:
-            check_results['checks']['directory_size_checks'].update(verify_disk_space.check_directory_size('/var/openebs', (300 * 1024 * 1024 * 1024 )))
-            check_results['checks']['directory_size_checks'].update(verify_disk_space.check_directory_size('/var/lib/docker', (100 * 1024 * 1024 * 1024 )))
-            check_results['checks']['directory_size_checks'].update(verify_disk_space.check_directory_size('/opt', (50 * 1024 * 1024 * 1024 )))
-            check_results['checks']['directory_size_checks'].update(verify_disk_space.check_directory_size('/', (50 * 1024 * 1024 * 1024 )))
+            check_results['checks']['directory_size_checks'].update(verify_disk_space.check_directory_size())
 
         if config.arguments.verify_disk_space:
-            check_results['checks']['is_own_partition_checks'].update(verify_disk_space.check_if_mount('/var/openebs'))
-            check_results['checks']['is_own_partition_checks'].update(verify_disk_space.check_if_mount('/var/lib/docker'))
-            check_results['checks']['is_own_partition_checks'].update(verify_disk_space.check_if_mount('/opt'))
+            check_results['checks']['is_own_partition_checks'].update(verify_disk_space.check_if_mount())
 
         if config.arguments.verify_pip:
             check_results['checks']['pip_checks'].update(verify_pip.attempt_pip_install())
