@@ -95,7 +95,7 @@ PUBLIC_ENDPOINTS = [
 
 NTP_EXECUTABLES = [
     "ntpd",
-    "chrony"
+    "chronyd"
 ]
 
 UNALLOWED_EXECUTABLES = [
