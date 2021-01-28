@@ -39,9 +39,6 @@ verify_action.add_argument("--lb-fqdn", type=str, default=socket.gethostname(),
 verify_action.add_argument("--lb-delay-period", type=int, default=90,
                         help="Time in seconds to wait for before testing the load balancer. Allows the LB to see that there is something listening. Default 90s.")
 
-verify_action.add_argument("--additional-node-fqdn", action='append',
-                        help="Node FQDNs. May be specified multiple times for multiple nodes. Default is the current hosts' FQDN.")
-
 verify_action.add_argument("--offline", type=str2bool, default=False,
                         help="Run in Offline mode.")
 
@@ -70,6 +67,12 @@ verify_action.add_argument("--swimlane-key", type=str, default=False,
 
 verify_action.add_argument("--verify-disk-space", type=str2bool, default=True,
                         help="Enable verification of disk space and partitions.")
+
+verify_action.add_argument("--verify-intra-cluster-ports", type=str2bool, default=False,
+                        help="Enable verification of communication between nodes. Requires --additional-node-fqdn.")
+
+verify_action.add_argument("--additional-node-fqdn", action='append',
+                        help="Node FQDNs. May be specified multiple times for multiple nodes.")
 
 listener_action = commands.add_parser('listener', help="Load Balancer Listener daemon.")
 
@@ -107,3 +110,17 @@ OK = '\033[92m'
 WARNING = '\033[93m'
 FAIL = '\033[91m'
 ENDC = '\033[0m'
+
+INTRA_CLUSTER_PORTS = [
+    2379,
+    2380,
+    6783,
+    6784,
+    10250,
+    10251,
+    10252,
+    32000, # Randomly chosen ports in the
+    32100, # 32,000 - 32,767 range
+    32500,
+    32767
+]

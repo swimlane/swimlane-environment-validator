@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import os
+from prettytable import PrettyTable
 import swimlane_environment_validator.lib.config as config
 import swimlane_environment_validator.lib.log_handler as log_handler
 import swimlane_environment_validator.lib.verify_load_balancer as verify_load_balancer
@@ -99,6 +100,18 @@ def print_table(checks):
         for key, value in checks['load_balancer_port_checks'].items():
             print("| {:50} | {:80} | {:15} | {:8} |".format(key, value['message'], str(value['status_code']), str(value['result'])))
         print("|{}|".format('_'*162))
+
+    if config.arguments.verify_intra_cluster_ports and config.arguments.additional_node_fqdn:
+        field_names = config.INTRA_CLUSTER_PORTS
+        field_names.insert(0,'Node')
+        x = PrettyTable()
+        x.field_names = field_names
+        for node,ports in checks['intra_port_connectivity'].items():
+            row = [*ports.values()]
+            row.insert(0,node)
+            x.add_row(row)
+
+        print(x.get_string())
 
     print("|{}|".format('-'*150))
     print("|{:^150}|".format('!!! Additional Manual Checks !!!'))

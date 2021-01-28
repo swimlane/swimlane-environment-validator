@@ -17,6 +17,7 @@ import swimlane_environment_validator.lib.verify_ntp as verify_ntp
 import swimlane_environment_validator.lib.verify_public_endpoints as verify_public_endpoints
 import swimlane_environment_validator.lib.check_proxy_vars as check_proxy_vars
 import swimlane_environment_validator.lib.verify_executables as verify_executables
+import swimlane_environment_validator.lib.verify_cluster_ports as verify_cluster_ports
 
 import swimlane_environment_validator.lib.http_listener as http_listener
 
@@ -37,7 +38,8 @@ check_results = {
         "ntp_checks": {},
         "hostnamectl_checks": {},
         "proxy_env_var_checks": {},
-        "disallowed_executables": {}
+        "disallowed_executables": {},
+        "intra_port_connectivity": {}
     }
 }
 
@@ -84,7 +86,7 @@ def main():
 
         if config.arguments.verify_lb:
             if verify_load_balancer.verify_dns_resolution(config.arguments.lb_fqdn):
-                http_listener_threads = http_listener.start_listener_threads()
+                http_listener_threads = http_listener.start_lb_listener_threads()
                 logger.info('Sleeping for {} seconds to allow LB to see that we are live'.format(config.arguments.lb_delay_period))
                 time.sleep(config.arguments.lb_delay_period)
                 check_results['checks']['load_balancer_port_checks'].update(
@@ -109,6 +111,10 @@ def main():
         if config.arguments.verify_executables:
             check_results['checks']['disallowed_executables'].update(verify_executables.check_installed_executables(config.UNALLOWED_EXECUTABLES))
 
+        if config.arguments.verify_intra_cluster_ports and config.arguments.additional_node_fqdn:
+            check_results['checks']['intra_port_connectivity'].update(verify_cluster_ports.verify_port_connectivity())
+
+
         logger.debug('Cleaning up temporary directory')
         shutil.rmtree(tmp_path)
         logger.debug(json.dumps(check_results, sort_keys=True, indent=4))
@@ -116,8 +122,9 @@ def main():
         table.print_table(check_results['checks'])
 
     if config.arguments.command == 'listener':
-        http_listener_threads = http_listener.start_listener_threads()
-        input("Web Listeners are running, press enter to exit.")
+        http_listener_threads = http_listener.start_lb_listener_threads()
+        http_listener.start_intra_cluster_listener_threads()
+        input("Web and Intra-Cluster Listeners are running, press enter to exit.")
 
 if __name__ == "__main__":
     main()

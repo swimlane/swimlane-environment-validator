@@ -30,7 +30,7 @@ def serve_on_port(port):
     except:
         logger.error('Couldnt start listener on port {}, is something already listening? Ports below 1024 can only be spawned by root.'.format(port))
 
-def start_listener_threads():
+def start_lb_listener_threads():
     k8s_thread = Thread(target=serve_on_port, args=[config.arguments.k8s_port])
     web_thread = Thread(target=serve_on_port, args=[config.arguments.web_port])
     spi_thread = Thread(target=serve_on_port, args=[config.arguments.spi_port])
@@ -48,3 +48,11 @@ def start_listener_threads():
         'web' : web_thread,
         'spi' : spi_thread
     }
+
+def start_intra_cluster_listener_threads():
+
+    for listener in config.INTRA_CLUSTER_PORTS:
+        listener_thread = Thread(target=serve_on_port, args=[listener])
+        listener_thread.daemon = True
+
+        listener_thread.start()
