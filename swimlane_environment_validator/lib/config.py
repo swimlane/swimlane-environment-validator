@@ -131,8 +131,8 @@ if arguments.enable_listeners:
 else:
     LB_CONNECTIVITY_ENDPOINTS = [
         'https://{}:{}/livez'.format(arguments.lb_fqdn, arguments.k8s_port),
-        'https://{}:{}/nginx-health'.format(arguments.lb_fqdn, arguments.arguments.web_port),
-        'https://{}:{}/healthz'.format(arguments.lb_fqdn, arguments.arguments.spi_port)
+        'https://{}:{}/nginx-health'.format(arguments.lb_fqdn, arguments.web_port),
+        'https://{}:{}/healthz'.format(arguments.lb_fqdn, arguments.spi_port)
     ]
 
 INTRA_CLUSTER_PORTS = [
