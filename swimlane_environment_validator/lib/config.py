@@ -83,6 +83,7 @@ arguments = parser.parse_args()
 PUBLIC_ENDPOINTS = [
     "https://get.swimlane.io/nginx-health",
     "https://k8s.kurl.sh",
+    "https://kurl.sh",
     "https://kurl-sh.s3.amazonaws.com/dist/ekco-0.6.0.tar.gz",
     "https://registry.replicated.com/v2",
     "https://proxy.replicated.com/healthz",
