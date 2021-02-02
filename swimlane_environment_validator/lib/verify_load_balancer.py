@@ -34,7 +34,7 @@ def verify_port_connectivity():
         if r.status_code == 200:
             logger.info("{} responded!".format(endpoint))
 
-            if not config.arguments.enable_listeners:
+            if config.arguments.enable_listeners:
                 if json.dumps(r.json()) == '{"status": "ok"}':
                     result['result'] = "{}Passed{}".format(config.OK, config.ENDC)
                 else:
