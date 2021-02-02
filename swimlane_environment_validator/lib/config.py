@@ -27,11 +27,13 @@ parser.add_argument("--spi-port", type=int, default=8800,
 parser.add_argument("--debug", type=str2bool, default=False,
                         help="Set to True to enable debug mode.")
 
-
 verify_action = commands.add_parser('verify', help="Run the environment verifier.")
 
 verify_action.add_argument("--verify-lb", type=str2bool, default=True,
                         help="Load Balancer FQDN. Default is the hostname of the node running the verifier script.")
+
+verify_action.add_argument("--enable-listeners", type=str2bool, default=True,
+                        help="Enable listeners if your load balancer has no healthy nodes.")
 
 verify_action.add_argument("--lb-fqdn", type=str, default=socket.gethostname(),
                         help="Load Balancer FQDN. Default is the hostname of the node running the verifier script.")

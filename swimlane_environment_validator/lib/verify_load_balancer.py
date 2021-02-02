@@ -33,13 +33,16 @@ def verify_port_connectivity(lb_fqdn):
 
         if r.status_code == 200:
             logger.info("{}:{} responded!".format(lb_fqdn, port))
-            if json.dumps(r.json()) == '{"status": "ok"}':
-                result['result'] = "{}Passed{}".format(config.OK, config.ENDC)
-            else:
-                result['result'] = "{}Warning{}".format(config.WARNING, config.ENDC)
-                logger.error("{}:{} responded but it didnt match the expected output. Did something else respond to it?".format(lb_fqdn, port))
-                logger.error(r.content)
 
+            if not config.arguments.disable_listeners:
+                if json.dumps(r.json()) == '{"status": "ok"}':
+                    result['result'] = "{}Passed{}".format(config.OK, config.ENDC)
+                else:
+                    result['result'] = "{}Warning{}".format(config.WARNING, config.ENDC)
+                    logger.error("{}:{} responded but it didnt match the expected output. Did something else respond to it?".format(lb_fqdn, port))
+                    logger.error(r.content)
+            else:
+                result['result'] = "{}Passed{}".format(config.OK, config.ENDC)
         else:
             logger.error("{}:{} didn't respond with code 200..".format(lb_fqdn, port))
             result['result'] = "{}Failed{}".format(config.FAIL, config.ENDC)
