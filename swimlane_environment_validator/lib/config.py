@@ -96,6 +96,8 @@ PUBLIC_ENDPOINTS = [
     "https://auth.docker.io/token",
     "https://registry-1.docker.io",
     "https://production.cloudflare.docker.com",
+    "https://files.pythonhosted.org",
+    "https://pypi.org"
 ]
 
 NTP_EXECUTABLES = [
