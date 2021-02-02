@@ -8,15 +8,19 @@ logger = log_handler.setup_logger()
 
 def check_service_running(service):
 
-    sp = subprocess.Popen(
-                                [
-                                    "systemctl",
-                                    "is-active",
-                                    service
-                                ],
-                                stdout=subprocess.DEVNULL, 
-                                stderr=subprocess.STDOUT
-                              )
+    try:
+        sp = subprocess.Popen(
+                                    [
+                                        "systemctl",
+                                        "is-active",
+                                        service
+                                    ],
+                                    stdout=subprocess.DEVNULL, 
+                                    stderr=subprocess.STDOUT
+                                  )
+    except FileNotFoundError:
+        logger.error("Something went wrong with trying to check if {} is running. Does this system use systemctl?")
+        return False    
 
     streamdata = sp.communicate()[0]
     logger.debug('{} enabled return code: {}'.format(service, sp.returncode))
@@ -29,15 +33,19 @@ def check_service_running(service):
 
 def check_service_enabled(service):
 
-    sp = subprocess.Popen(
-                                [
-                                    "systemctl",
-                                    "is-enabled",
-                                    service
-                                ],
-                                stdout=subprocess.DEVNULL, 
-                                stderr=subprocess.STDOUT
-                              )
+    try:
+        sp = subprocess.Popen(
+                                    [
+                                        "systemctl",
+                                        "is-enabled",
+                                        service
+                                    ],
+                                    stdout=subprocess.DEVNULL, 
+                                    stderr=subprocess.STDOUT
+                                  )
+    except FileNotFoundError:
+        logger.error("Something went wrong with trying to check if {} is enabled. Does this system use systemctl?")
+        return False 
 
     streamdata = sp.communicate()[0]
     logger.debug('{} enabled return code: {}'.format(service, sp.returncode))

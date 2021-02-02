@@ -26,6 +26,8 @@ parser.add_argument("--spi-port", type=int, default=8800,
                         help="Port to listen for the Swimlane Platform Installer Load Balancer check. Default is 8800.")
 parser.add_argument("--debug", type=str2bool, default=False,
                         help="Set to True to enable debug mode.")
+parser.add_argument("--use-color", type=str2bool, default=True,
+                        help="Enable or Disable ANSI color codes. Useful for CI or non-interactive terminals.")
 
 verify_action = commands.add_parser('verify', help="Run the environment verifier.")
 
@@ -108,17 +110,30 @@ UNALLOWED_EXECUTABLES = [
     "kubelet"
 ]
 
-#Terminal ANSI color codes
-OK = '\033[92m'
-WARNING = '\033[93m'
-FAIL = '\033[91m'
-ENDC = '\033[0m'
+if arguments.use_color:
+    #Terminal ANSI color codes
+    OK = '\033[92m'
+    WARNING = '\033[93m'
+    FAIL = '\033[91m'
+    ENDC = '\033[0m'
+else:
+    OK = ''
+    WARNING = ''
+    FAIL = ''
+    ENDC = ''
 
-LB_CONNECTIVITY_PORTS = [
-    arguments.k8s_port,
-    arguments.web_port,
-    arguments.spi_port
-]
+if arguments.enable_listeners:
+    LB_CONNECTIVITY_ENDPOINTS = [
+        'http://{}:{}/health'.format(arguments.lb_fqdn, arguments.k8s_port),
+        'http://{}:{}/health'.format(arguments.lb_fqdn, arguments.arguments.web_port),
+        'http://{}:{}/health'.format(arguments.lb_fqdn, arguments.arguments.spi_port)
+    ]
+else:
+    LB_CONNECTIVITY_ENDPOINTS = [
+        'https://{}:{}/livez'.format(arguments.lb_fqdn, arguments.k8s_port),
+        'https://{}:{}/nginx-health'.format(arguments.lb_fqdn, arguments.arguments.web_port),
+        'https://{}:{}/healthz'.format(arguments.lb_fqdn, arguments.arguments.spi_port)
+    ]
 
 INTRA_CLUSTER_PORTS = [
     2379,
