@@ -61,7 +61,7 @@ def get_certificate_info():
     except:
         logger.error("Couldn't open {}, the file path my not exist, or it may not be an X509-encoded certificate.".format(config.arguments.swimlane_key))
         result['swimlane_certificate']['expiration'] = "-"
-        result['swimlane_certificate']['message'] = "Couldn't open {}, the file path my not exist, or it may not be an X509-encoded certificate.".format(config.arguments.swimlane_certificate)
+        result['swimlane_certificate']['message'] = "Couldn't open {}, the file path my not exist, or it may not be an X509-encoded certificate.".format(config.arguments.swimlane_key)
         result['swimlane_certificate']['results'] = "{}Failed{}".format(config.FAIL, config.ENDC)
         return result
 
