@@ -35,7 +35,14 @@ def verify_port_connectivity():
             logger.info("{} responded!".format(endpoint))
 
             if config.arguments.enable_listeners:
-                if json.dumps(r.json()) == '{"status": "ok"}':
+                try:
+                    json_r = json.dumps(r.json())
+                except json.decoder.JSONDecodeError:
+                    json_r = ''
+                    logger.error('Couldnt JSON decode response from {}'.format(endpoint))
+                    logger.error(r.content)
+
+                if json_r == '{"status": "ok"}':
                     result['result'] = "{}Passed{}".format(config.OK, config.ENDC)
                 else:
                     result['result'] = "{}Warning{}".format(config.WARNING, config.ENDC)
