@@ -3,3 +3,4 @@ pyOpenSSL==19.0.0
 pyinstaller==4.2
 prettytable==2.0.0
 cryptography==2.7
+crypto==1.4.1
