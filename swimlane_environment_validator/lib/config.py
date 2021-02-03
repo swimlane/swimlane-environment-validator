@@ -62,7 +62,7 @@ verify_action.add_argument("--pip-config", type=str, default=False,
                         help="Test connectivity to PyPi using the specified pip config. Requires pip and virtualenv to be installed.")
 
 verify_action.add_argument("--verify-swimlane-tls-certificate", type=str, default=False,
-                        help="Test connectivity to PyPi using the specified pip config. Requires pip and virtualenv to be installed.")
+                        help="Check attributes of the provided tls certificate for validity.")
 
 verify_action.add_argument("--swimlane-certificate", type=str, default=False,
                         help="File path for the TLS Certificate for Swimlane.")
@@ -127,8 +127,8 @@ else:
 if arguments.enable_listeners:
     LB_CONNECTIVITY_ENDPOINTS = [
         'http://{}:{}/health'.format(arguments.lb_fqdn, arguments.k8s_port),
-        'http://{}:{}/health'.format(arguments.lb_fqdn, arguments.arguments.web_port),
-        'http://{}:{}/health'.format(arguments.lb_fqdn, arguments.arguments.spi_port)
+        'http://{}:{}/health'.format(arguments.lb_fqdn, arguments.web_port),
+        'http://{}:{}/health'.format(arguments.lb_fqdn, arguments.spi_port)
     ]
 else:
     LB_CONNECTIVITY_ENDPOINTS = [

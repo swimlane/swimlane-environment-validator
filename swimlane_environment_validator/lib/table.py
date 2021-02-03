@@ -84,6 +84,16 @@ def print_table(checks):
             x.add_row(row)
         print(x.get_string())
 
+    if config.arguments.verify_swimlane_tls_certificate:
+        x = PrettyTable()
+        x.title = 'Certificate Validity'
+        x.field_names = ['Certificate', 'Expiration', 'Message', 'Result']
+        for k,v in checks['swimlane_certificate_checks'].items():
+            row = [*v.values()]
+            row.insert(0,k)
+            x.add_row(row)
+        print(x.get_string())
+
     if config.arguments.verify_intra_cluster_ports and config.arguments.additional_node_fqdn:
         field_names = config.INTRA_CLUSTER_PORTS
         field_names.insert(0,'Node')

@@ -11,13 +11,13 @@ import swimlane_environment_validator.lib.log_handler as log_handler
 
 import swimlane_environment_validator.lib.verify_disk_space as verify_disk_space
 import swimlane_environment_validator.lib.verify_load_balancer as verify_load_balancer
-import swimlane_environment_validator.lib.verify_tls as verify_tls
 import swimlane_environment_validator.lib.verify_pip as verify_pip
 import swimlane_environment_validator.lib.verify_ntp as verify_ntp
 import swimlane_environment_validator.lib.verify_public_endpoints as verify_public_endpoints
 import swimlane_environment_validator.lib.check_proxy_vars as check_proxy_vars
 import swimlane_environment_validator.lib.verify_executables as verify_executables
 import swimlane_environment_validator.lib.verify_cluster_ports as verify_cluster_ports
+import swimlane_environment_validator.lib.verify_tls as verify_tls
 
 import swimlane_environment_validator.lib.http_listener as http_listener
 
@@ -59,14 +59,6 @@ def main():
         if config.arguments.verify_public_endpoints and not config.arguments.offline:
             check_results['checks']['public_endpoint_checks'].update(verify_public_endpoints.check_endpoints(config.PUBLIC_ENDPOINTS))
 
-        if config.arguments.verify_swimlane_tls_certificate:
-            check_results['checks']['swimlane_certificate_checks'].update(
-                verify_tls.verify_certificate_key(
-                    config.arguments.swimlane_certificate,
-                    config.arguments.swimlane_key
-                )
-            )
-
         if config.arguments.verify_disk_space:
             check_results['checks']['directory_size_checks'].update(verify_disk_space.check_directory_size())
 
@@ -94,6 +86,8 @@ def main():
         if config.arguments.verify_intra_cluster_ports and config.arguments.additional_node_fqdn:
             check_results['checks']['intra_port_connectivity'].update(verify_cluster_ports.verify_port_connectivity())
 
+        if config.arguments.verify_swimlane_tls_certificate:
+            check_results['checks']['swimlane_certificate_checks'].update(verify_tls.get_certificate_info())
 
         logger.debug('Cleaning up temporary directory')
         shutil.rmtree(tmp_path)
