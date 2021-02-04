@@ -124,7 +124,13 @@ else:
     FAIL = ''
     ENDC = ''
 
-if arguments.enable_listeners:
+try:
+    arguments.enable_listeners
+    enabled_listeners = True
+except AttributeError:
+    enabled_listeners = False
+
+if enabled_listeners:
     LB_CONNECTIVITY_ENDPOINTS = [
         'http://{}:{}/health'.format(arguments.lb_fqdn, arguments.k8s_port),
         'http://{}:{}/health'.format(arguments.lb_fqdn, arguments.web_port),

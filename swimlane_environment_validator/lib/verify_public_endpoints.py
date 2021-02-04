@@ -12,7 +12,7 @@ def get_endpoint(endpoint_url, valid_header=False):
         "result" : "Skipped"
     }
 
-    r = requests.get(endpoint_url, allow_redirects=False) 
+    r = requests.get(endpoint_url, timeout=10, allow_redirects=False) 
     logger.debug(r.status_code)
 
     endpoint_result['status_code'] = r.status_code
