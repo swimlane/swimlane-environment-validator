@@ -47,7 +47,7 @@ def attempt_pip_install():
     }
 
     if not create_virtual_env():
-        result['pip']['message'] = "Failed to configure the venv to test pip with.."
+        result['pip']['message'] = "Failed to configure the venv to test pip with, is python3-virtualenv installed?"
         result['pip']['results'] = "{}Failed{}".format(config.FAIL, config.ENDC)
         return result
 
