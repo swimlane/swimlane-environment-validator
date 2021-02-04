@@ -16,7 +16,7 @@ def create_virtual_env():
                                     [
                                         "python3",
                                         "-m",
-                                        "venv",
+                                        "virtualenv",
                                         "pip-install-test-venv"
                                     ],
                                     stdout=subprocess.DEVNULL, 
@@ -25,7 +25,7 @@ def create_virtual_env():
 
         streamdata = sp.communicate()[0]
     except FileNotFoundError:
-        logger.error("Something went wrong with trying to create a virtualenv. Is python3 and python3-venv installed?")
+        logger.error("Something went wrong with trying to create a virtualenv. Is python3 and python3-virtualenv installed?")
         return False
 
     if config.arguments.verify_pip:
