@@ -56,8 +56,10 @@ def attempt_pip_install():
                                     "pip-install-test-venv/bin/python",
                                     "-m",
                                     "pip",
-                                    "download",
-                                    "example-package"
+                                    "install",
+                                    "example-package",
+                                    "--retries 0",
+                                    "--timeout 5"
                                 ],
                                 stdout=subprocess.DEVNULL, 
                                 stderr=subprocess.STDOUT
@@ -65,12 +67,12 @@ def attempt_pip_install():
 
     streamdata = sp.communicate()[0]
     if sp.returncode != 0:
-        logger.error("Something went wrong with the pip download command..")
-        result['pip']['message'] = "Something went wrong with the pip download command."
+        logger.error("Something went wrong with the pip install command..")
+        result['pip']['message'] = "Something went wrong with the pip install command."
         result['pip']['results'] = "{}Failed{}".format(config.FAIL, config.ENDC)
     else:
-        logger.info("Was able to download example-package from the configured pip repository!")
-        result['pip']['message'] = "example-package was able to be downloaded from the configured PyPi server."
+        logger.info("Was able to install example-package from the configured pip repository!")
+        result['pip']['message'] = "example-package was able to be installws from the configured PyPi server."
         result['pip']['results'] = "{}Passed{}".format(config.OK, config.ENDC)
     
     return result
