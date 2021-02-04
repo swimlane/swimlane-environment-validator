@@ -47,8 +47,8 @@ def attempt_pip_install():
     }
 
     if not create_virtual_env():
-        result['pip']['results'] = "{}Failed{}".format(config.FAIL, config.ENDC)
         result['pip']['message'] = "Failed to configure the venv to test pip with.."
+        result['pip']['results'] = "{}Failed{}".format(config.FAIL, config.ENDC)
         return result
 
     sp = subprocess.Popen(
@@ -66,11 +66,11 @@ def attempt_pip_install():
     streamdata = sp.communicate()[0]
     if sp.returncode != 0:
         logger.error("Something went wrong with the pip download command..")
-        result['pip']['results'] = "{}Failed{}".format(config.FAIL, config.ENDC)
         result['pip']['message'] = "Something went wrong with the pip download command."
+        result['pip']['results'] = "{}Failed{}".format(config.FAIL, config.ENDC)
     else:
         logger.info("Was able to download example-package from the configured pip repository!")
-        result['pip']['results'] = "{}Passed{}".format(config.OK, config.ENDC)
         result['pip']['message'] = "example-package was able to be downloaded from the configured PyPi server."
+        result['pip']['results'] = "{}Passed{}".format(config.OK, config.ENDC)
     
     return result
