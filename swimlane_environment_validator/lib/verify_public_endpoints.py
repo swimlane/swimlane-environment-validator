@@ -14,8 +14,8 @@ def get_endpoint(endpoint_url, valid_header=False):
 
     try:
         r = requests.get(endpoint_url, timeout=10, allow_redirects=False)
-    except requests.exceptions.ConnectTimeout:
-        logger.error('Response from {} timed out after 10s.'.format(endpoint_url))
+    except:
+        logger.error('Response from {} timed out or failed after 10s.'.format(endpoint_url))
         endpoint_result['status_code'] = "-"
         endpoint_result['result'] = "{}Failed{}".format(config.FAIL, config.ENDC)
         return endpoint_result
