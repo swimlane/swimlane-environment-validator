@@ -53,7 +53,10 @@ def main():
         logger.debug('Creating temporary directory')
         tmp_path = tempfile.mkdtemp()
         if config.arguments.pip_config:
-            shutil.copyfile(config.arguments.pip_config, '{}/pip.conf'.format(tmp_path))
+            try:
+                shutil.copyfile(config.arguments.pip_config, '{}/pip.conf'.format(tmp_path))
+            except FileNotFoundError:
+                logger.warning("Couldn't find file {} for pip config, continuing without it...".format(config.arguments.pip_config))
         os.chdir(tmp_path)
 
         if config.arguments.verify_public_endpoints and not config.arguments.offline:
