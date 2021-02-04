@@ -28,7 +28,7 @@ def create_virtual_env():
         logger.error("Something went wrong with trying to create a virtualenv. Is python3 and python3-virtualenv installed?")
         return False
 
-    if config.arguments.verify_pip:
+    if config.arguments.pip_config:
         try:
             shutil.copyfile(config.arguments.pip_config, 'pip-install-test-venv/pip.conf')
         except FileNotFoundError:
