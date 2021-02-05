@@ -11,24 +11,14 @@ logger = log_handler.setup_logger()
 
 def create_virtual_env():
 
-    try:
-        sp = subprocess.Popen(
-                                    [
-                                        "python3",
-                                        "-m",
-                                        "virtualenv",
-                                        "pip-install-test-venv"
-                                    ],
-                                    stdout=subprocess.DEVNULL, 
-                                    stderr=subprocess.STDOUT
-                                  )
+    sp = subprocess.run(["python3 -m virtualenv pip-install-test-venv"],
+                                stderr=subprocess.STDOUT,
+                                encoding='UTF-8',
+                                shell=True,
+                                stdout=subprocess.PIPE
+                              )
 
-        streamdata = sp.communicate()[0]
-    except FileNotFoundError:
-        logger.error("Something went wrong with trying to create a virtualenv. Is python3 and python3-virtualenv installed?")
-        return False
-
-    if config.arguments.pip_config:
+    if config.arguments.pip_config and sp.returncode == 0:
         try:
             shutil.copyfile(config.arguments.pip_config, 'pip-install-test-venv/pip.conf')
         except FileNotFoundError:
@@ -36,6 +26,7 @@ def create_virtual_env():
 
     if sp.returncode != 0:
         logger.error("Something went wrong with trying to create a virtualenv. Is virtualenv installed?")
+        logger.debug(sp.stdout)
         return False
     else:
         logger.debug("Virtualenv created to test pip with config file")
@@ -51,23 +42,16 @@ def attempt_pip_install():
         result['pip']['results'] = "{}Failed{}".format(config.FAIL, config.ENDC)
         return result
 
-    sp = subprocess.Popen(
-                                [
-                                    "pip-install-test-venv/bin/python",
-                                    "-m",
-                                    "pip",
-                                    "install",
-                                    "example-package",
-                                    "--retries 0",
-                                    "--timeout 5"
-                                ],
-                                stdout=subprocess.DEVNULL, 
-                                stderr=subprocess.STDOUT
+    sp = subprocess.run(["pip-install-test-venv/bin/python -m pip install example-package --retries 0 --timeout 5"],
+                                stderr=subprocess.STDOUT,
+                                encoding='UTF-8',
+                                shell=True,
+                                stdout=subprocess.PIPE
                               )
 
-    streamdata = sp.communicate()[0]
     if sp.returncode != 0:
         logger.error("Something went wrong with the pip install command..")
+        logger.error(sp.stdout)
         result['pip']['message'] = "Something went wrong with the pip install command."
         result['pip']['results'] = "{}Failed{}".format(config.FAIL, config.ENDC)
     else:
