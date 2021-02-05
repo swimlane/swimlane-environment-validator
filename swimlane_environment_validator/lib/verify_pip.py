@@ -42,6 +42,7 @@ def attempt_pip_install():
         result['pip']['results'] = "{}Failed{}".format(config.FAIL, config.ENDC)
         return result
 
+    logger.info("Attempting to install pip package example-package")
     sp = subprocess.run(["pip-install-test-venv/bin/python -m pip install example-package --retries 0 --timeout 5"],
                                 stderr=subprocess.STDOUT,
                                 encoding='UTF-8',
