@@ -23,10 +23,17 @@ def verify_port_connectivity():
 
         result_name = "{}".format(endpoint)
 
+        if not verify_dns_resolution(config.arguments.lb_fqdn):
+            result['message'] = "Unable to resolve {}".format(config.arguments.lb_fqdn)
+            result['result'] = "{}Failed{}".format(config.FAIL, config.ENDC)
+            results[result_name] = result
+            continue
+
         try:
             r = requests.get(endpoint, timeout=10, verify=False)
         except:
             logger.error("{} refused the connection..".format(endpoint))
+            result['message'] = "{} refused the connection..".format(endpoint)
             result['result'] = "{}Failed{}".format(config.FAIL, config.ENDC)
             results[result_name] = result
             continue
@@ -43,15 +50,19 @@ def verify_port_connectivity():
                     logger.error(r.content)
 
                 if json_r == '{"status": "ok"}':
+                    result['message'] = "-"
                     result['result'] = "{}Passed{}".format(config.OK, config.ENDC)
                 else:
+                    result['message'] = "{}responded but it didnt match the expected output. Did something else respond to it?".format(endpoint)
                     result['result'] = "{}Warning{}".format(config.WARNING, config.ENDC)
                     logger.error("{}responded but it didnt match the expected output. Did something else respond to it?".format(endpoint))
                     logger.error(r.content)
             else:
+                result['message'] = "-"
                 result['result'] = "{}Passed{}".format(config.OK, config.ENDC)
         else:
             logger.error("{} didn't respond with code 200..".format(endpoint))
+            result['message'] = "{} didn't respond with code 200..".format(endpoint)
             result['result'] = "{}Failed{}".format(config.FAIL, config.ENDC)
             results[result_name] = result
         

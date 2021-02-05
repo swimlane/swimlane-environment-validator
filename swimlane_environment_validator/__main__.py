@@ -75,13 +75,11 @@ def main():
             check_results['checks']['ntp_checks'].update(verify_ntp.get_service_status())
 
         if config.arguments.verify_lb:
-            if verify_load_balancer.verify_dns_resolution(config.arguments.lb_fqdn):
-
-                if config.arguments.enable_listeners:
-                    http_listener.start_lb_listener_threads()
-                    logger.info('Sleeping for {} seconds to allow LB to see that we are live'.format(config.arguments.lb_delay_period))
-                    time.sleep(config.arguments.lb_delay_period)
-                check_results['checks']['load_balancer_port_checks'].update(verify_load_balancer.verify_port_connectivity())
+            if config.arguments.enable_listeners:
+                http_listener.start_lb_listener_threads()
+                logger.info('Sleeping for {} seconds to allow LB to see that we are live'.format(config.arguments.lb_delay_period))
+                time.sleep(config.arguments.lb_delay_period)
+            check_results['checks']['load_balancer_port_checks'].update(verify_load_balancer.verify_port_connectivity())
 
         if config.arguments.verify_executables:
             check_results['checks']['disallowed_executables'].update(verify_executables.check_installed_executables(config.UNALLOWED_EXECUTABLES))

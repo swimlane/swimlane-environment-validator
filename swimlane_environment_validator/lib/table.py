@@ -74,10 +74,10 @@ def print_table(checks):
             x.add_row(row)
         print(x.get_string())
 
-    if config.arguments.verify_lb and verify_load_balancer.verify_dns_resolution(config.arguments.lb_fqdn):
+    if config.arguments.verify_lb:
         x = PrettyTable()
         x.title = 'Load Balancer Endpoints'
-        x.field_names = ['Endpoint', 'Result']
+        x.field_names = ['Endpoint', 'Message', 'Result']
         for k,v in checks['load_balancer_port_checks'].items():
             row = [*v.values()]
             row.insert(0,k)
