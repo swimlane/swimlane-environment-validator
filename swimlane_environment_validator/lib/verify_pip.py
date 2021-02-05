@@ -57,7 +57,7 @@ def attempt_pip_install():
         result['pip']['results'] = "{}Failed{}".format(config.FAIL, config.ENDC)
     else:
         logger.info("Was able to install example-package from the configured pip repository!")
-        result['pip']['message'] = "example-package was able to be installws from the configured PyPi server."
+        result['pip']['message'] = "example-package was able to be installed from the configured PyPi server."
         result['pip']['results'] = "{}Passed{}".format(config.OK, config.ENDC)
     
     return result

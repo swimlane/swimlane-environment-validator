@@ -125,12 +125,12 @@ else:
     ENDC = ''
 
 try:
-    arguments.enable_listeners
-    enabled_listeners = True
+    if arguments.enable_listeners:
+        enabled_listeners = True
 except AttributeError:
     enabled_listeners = False
 
-if enabled_listeners:
+if arguments.enable_listeners:
     LB_CONNECTIVITY_ENDPOINTS = [
         'http://{}:{}/health'.format(arguments.lb_fqdn, arguments.k8s_port),
         'http://{}:{}/health'.format(arguments.lb_fqdn, arguments.web_port),
