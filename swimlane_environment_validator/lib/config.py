@@ -130,7 +130,7 @@ try:
 except AttributeError:
     enabled_listeners = False
 
-if arguments.enable_listeners:
+if enabled_listeners:
     LB_CONNECTIVITY_ENDPOINTS = [
         'http://{}:{}/health'.format(arguments.lb_fqdn, arguments.k8s_port),
         'http://{}:{}/health'.format(arguments.lb_fqdn, arguments.web_port),
