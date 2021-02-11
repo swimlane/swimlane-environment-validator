@@ -30,6 +30,14 @@ def check_proxy_vars():
         "https_proxy": {
             "message": check_var('https_proxy'),
             "result": "-",
+        },
+        "all_proxy": {
+            "message": check_var('all_proxy'),
+            "result": "-",
+        },
+        "ALL_PROXY": {
+            "message": check_var('ALL_PROXY'),
+            "result": "-",
         }
     }
 
