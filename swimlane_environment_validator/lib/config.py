@@ -79,6 +79,8 @@ verify_action.add_argument("--additional-node-fqdn", action='append',
                         help="Node FQDNs. May be specified multiple times for multiple nodes.")
 
 listener_action = commands.add_parser('listener', help="Load Balancer Listener daemon.")
+listener_action.add_argument("--lb-fqdn", type=str, default=socket.gethostname(),
+                        help="Load Balancer FQDN. Default is the hostname of the node running the verifier script.")
 
 arguments = parser.parse_args()
 
