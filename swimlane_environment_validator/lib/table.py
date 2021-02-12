@@ -12,6 +12,7 @@ def print_table(checks):
     x.field_names = ['Proxy Var','Message']
     for k,v in checks['proxy_env_var_checks'].items():
         row = [*v.values()]
+        row.insert(0,k)
         x.add_row(row)
     print(x.get_string())
 
