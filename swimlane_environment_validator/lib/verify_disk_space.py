@@ -21,6 +21,7 @@ def check_directory_size():
             result['Total Space Size'] = "-"
             result['Percentage Used'] = "-"
             result['message'] = "{} could not be found".format(directory)
+            result['minimum'] = size(minimum_bytes, system=iec)
             result['result'] = "{}Failed{}".format(config.FAIL, config.ENDC)
             results[directory] = result
             continue
@@ -39,10 +40,12 @@ def check_directory_size():
         if total >= minimum_bytes:
             logger.info('{} has at least {} worth of space.'.format(directory, size(minimum_bytes, system=iec)))
             result['message'] = "-"
+            result['minimum'] = size(minimum_bytes, system=iec)
             result['result'] = "{}Passed{}".format(config.OK, config.ENDC)
         else:
             logger.error('{} is less than {} worth of space'.format(directory, size(minimum_bytes, system=iec)))
             result['message'] = "{} is not large enough to meet minimum requirements.".format(directory)
+            result['minimum'] = size(minimum_bytes, system=iec)
             result['result'] = "{}Failed{}".format(config.FAIL, config.ENDC)
         results[directory] = result
     return results
