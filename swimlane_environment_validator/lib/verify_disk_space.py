@@ -3,6 +3,7 @@ import swimlane_environment_validator.lib.config as config
 import swimlane_environment_validator.lib.log_handler as log_handler
 import shutil
 import os
+from hurry.filesize import size, iec
 
 logger = log_handler.setup_logger()
 
@@ -25,22 +26,22 @@ def check_directory_size():
             continue
 
         logger.debug('Partition size \nTotal: {total}\nUsed: {used}\nFree: {free}, Percentage Used: {percentage}'.format(
-            total=( total / 1024 / 1024 / 1024 ),
-            used=( used / 1024 / 1024 / 1024 ),
-            free=( free / 1024 / 1024 / 1024 ),
+            total=size(total, system=iec),
+            used=size(used, system=iec),
+            free=size(free, system=iec),
             percentage=( ( used / total ) * 100 )
             )
         )
 
-        result['Total Space Size'] = ( total / 1024 / 1024 / 1024 )
+        result['Total Space Size'] = size(total, system=iec)
         result['Percentage Used'] = ( ( used / total ) * 100 )
 
         if total >= minimum_bytes:
-            logger.info('{} has at least {} bytes available.'.format(directory, minimum_bytes))
+            logger.info('{} has at least {} worth of space.'.format(directory, size(minimum_bytes, system=iec)))
             result['message'] = "-"
             result['result'] = "{}Passed{}".format(config.OK, config.ENDC)
         else:
-            logger.error('{} has less {} bytes available.'.format(directory, minimum_bytes))
+            logger.error('{} is less than {} worth of space'.format(directory, size(minimum_bytes, system=iec)))
             result['message'] = "{} is not large enough to meet minimum requirements.".format(directory)
             result['result'] = "{}Failed{}".format(config.FAIL, config.ENDC)
         results[directory] = result
