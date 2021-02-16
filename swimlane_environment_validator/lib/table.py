@@ -9,9 +9,10 @@ def print_table(checks):
 
     x = PrettyTable()
     x.title = 'Environment Info'
-    x.field_names = ['Proxy Var','Message']
+    x.field_names = ['Proxy Var','Value']
     for k,v in checks['proxy_env_var_checks'].items():
         row = [*v.values()]
+        row.insert(0,k)
         x.add_row(row)
     print(x.get_string())
 

@@ -6,38 +6,26 @@ logger = log_handler.setup_logger()
 
 def check_var(var):
     if environ.get(var) is None:
-        logger.debug('Env Var {} not found, will not use this proxy.'.format(var))
-        return "{} is not set.".format(var)
+        logger.debug('Environment variable, will not use this proxy.')
+        return "-"
     else:
-        logger.info('Env Var {} found, if will use this proxy'.format(var))
-        return "{} is set to {}.".format(var, environ.get(var))
+        logger.info('Environment variable found, if will use this proxy')
+        return "{}".format(environ.get(var))
 
 def check_proxy_vars():
 
     results = {
         "HTTP_PROXY": {
-            "message": check_var('HTTP_PROXY'),
-            "result": "-",
+            "message": check_var('HTTP_PROXY')
         },
         "HTTPS_PROXY": {
-            "message": check_var('HTTPS_PROXY'),
-            "result": "-",
+            "message": check_var('HTTPS_PROXY')
         },
         "http_proxy": {
-            "message": check_var('http_proxy'),
-            "result": "-",
+            "message": check_var('http_proxy')
         },
         "https_proxy": {
-            "message": check_var('https_proxy'),
-            "result": "-",
-        },
-        "all_proxy": {
-            "message": check_var('all_proxy'),
-            "result": "-",
-        },
-        "ALL_PROXY": {
-            "message": check_var('ALL_PROXY'),
-            "result": "-",
+            "message": check_var('https_proxy')
         }
     }
 
