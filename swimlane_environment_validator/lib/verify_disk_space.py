@@ -3,7 +3,7 @@ import swimlane_environment_validator.lib.config as config
 import swimlane_environment_validator.lib.log_handler as log_handler
 import shutil
 import os
-from hurry.filesize import size, iec
+from hurry.filesize import size, iec, si
 
 logger = log_handler.setup_logger()
 
@@ -13,6 +13,7 @@ def check_directory_size():
         logger.debug('Checking size of {}'.format(directory))
 
         result = {}
+        minimum_bytes_pretty = size(minimum_bytes + 1024, system=iec)
 
         try:
             total, used, free = shutil.disk_usage(directory)
@@ -21,7 +22,7 @@ def check_directory_size():
             result['Total Space Size'] = "-"
             result['Percentage Used'] = "-"
             result['message'] = "{} could not be found".format(directory)
-            result['minimum'] = size(minimum_bytes, system=iec)
+            result['minimum'] = minimum_bytes_pretty
             result['result'] = "{}Failed{}".format(config.FAIL, config.ENDC)
             results[directory] = result
             continue
@@ -34,18 +35,18 @@ def check_directory_size():
             )
         )
 
-        result['Total Space Size'] = size(total, system=iec)
+        result['Total Space Size'] = size(total, system=si)
         result['Percentage Used'] = int(( ( used / total ) * 100 ))
 
         if total >= minimum_bytes:
-            logger.info('{} has at least {} worth of space.'.format(directory, size(minimum_bytes, system=iec)))
+            logger.info('{} has at least {} worth of space.'.format(directory, minimum_bytes_pretty))
             result['message'] = "-"
-            result['minimum'] = size(minimum_bytes, system=iec)
+            result['minimum'] = minimum_bytes_pretty
             result['result'] = "{}Passed{}".format(config.OK, config.ENDC)
         else:
-            logger.error('{} is less than {} worth of space'.format(directory, size(minimum_bytes, system=iec)))
+            logger.error('{} is less than {} worth of space'.format(directory, minimum_bytes_pretty))
             result['message'] = "{} is not large enough to meet minimum requirements.".format(directory)
-            result['minimum'] = size(minimum_bytes, system=iec)
+            result['minimum'] = minimum_bytes_pretty
             result['result'] = "{}Failed{}".format(config.FAIL, config.ENDC)
         results[directory] = result
     return results
