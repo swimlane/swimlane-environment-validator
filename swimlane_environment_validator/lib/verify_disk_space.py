@@ -35,7 +35,7 @@ def check_directory_size():
             )
         )
 
-        result['Total Space Size'] = size(total, system=si)
+        result['Total Space Size'] = size(total, system=iec)
         result['Percentage Used'] = int(( ( used / total ) * 100 ))
 
         if total >= minimum_bytes:
