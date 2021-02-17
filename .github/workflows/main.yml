@@ -49,8 +49,7 @@ jobs:
       - name: Compile script into binary
         working-directory: swimlane_environment_validator
         run: |
-          pyinstaller __main__.py --onefile
-          mv dist/__main__ dist/swimlane-environment-validator
+          pyinstaller __main__.py --onefile --name swimlane-environment-validator
 
       - name: Upload Artifact for Development
         if: ${{ github.event_name == 'pull_request' || github.event_name == 'push' }}

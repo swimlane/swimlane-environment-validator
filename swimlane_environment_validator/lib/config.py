@@ -16,7 +16,7 @@ def str2bool(v):
 parser = argparse.ArgumentParser()
 commands = parser.add_subparsers(dest='command')
 
-verify_action = commands.add_parser('version', help="Print the version and then exit.")
+version_action = commands.add_parser('version', help="Print the version and then exit.")
 
 parser.add_argument("--k8s-port", type=int,  default=6443,
                         help="Port to listen for the Kubernetes Load Balancer check. Default is 6443.")
@@ -83,6 +83,12 @@ listener_action.add_argument("--lb-fqdn", type=str, default=socket.gethostname()
                         help="Load Balancer FQDN. Default is the hostname of the node running the verifier script.")
 
 arguments = parser.parse_args()
+
+if arguments.command == 'version':
+    import sys
+    from .. import __version__
+    print(__version__.__version__)
+    sys.exit(0)
 
 PUBLIC_ENDPOINTS = [
     "https://get.swimlane.io/nginx-health",
