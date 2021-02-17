@@ -173,10 +173,10 @@ INTRA_CLUSTER_PORTS = [
 
 # Directory name, minimum space in bytes. Subtract one GB so that a 400GB raw disk is acceptable
 DIRECTORY_SIZES_CHECK = {
-    "/var/openebs": (299 * 1024 * 1024 * 1024 ),
-    "/var/lib/docker": (99 * 1024 * 1024 * 1024 ),
-    "/opt": (49 * 1024 * 1024 * 1024 ),
-    "/": (49 * 1024 * 1024 * 1024 )
+    "/var/openebs": "300G",
+    "/var/lib/docker": "100G",
+    "/opt": "50G",
+    "/": "50G"
 }
 
 DIRECTORY_IS_MOUNT_CHECK = [
