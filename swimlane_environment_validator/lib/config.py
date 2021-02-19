@@ -96,21 +96,21 @@ if arguments.command is None:
     sys.exit(1)
 
 PUBLIC_ENDPOINTS = [
-    "https://get.swimlane.io/nginx-health",
-    "https://k8s.kurl.sh",
-    "https://kurl.sh",
-    "https://kurl-sh.s3.amazonaws.com/dist/ekco-0.6.0.tar.gz",
-    "https://registry.replicated.com/v2",
-    "https://proxy.replicated.com/healthz",
-    "https://k8s.gcr.io",
-    "https://storage.googleapis.com",
-    "https://quay.io",
-    "https://replicated.app",
-    "https://auth.docker.io/token",
-    "https://registry-1.docker.io",
-    "https://production.cloudflare.docker.com",
-    "https://files.pythonhosted.org",
-    "https://pypi.org"
+    { "endpoint": "https://get.swimlane.io/nginx-health", "status_code": 200 },
+    { "endpoint": "https://k8s.kurl.sh", "status_code": 200 },
+    { "endpoint": "https://kurl.sh", "status_code": 200 },
+    { "endpoint": "https://kurl-sh.s3.amazonaws.com/dist/ekco-0.6.0.tar.gz", "status_code": 200 },
+    { "endpoint": "https://registry.replicated.com/v2", "status_code": 301 },
+    { "endpoint": "https://proxy.replicated.com/healthz", "status_code": 200 },
+    { "endpoint": "https://k8s.gcr.io", "status_code": 302 },
+    { "endpoint": "https://storage.googleapis.com", "status_code": 400 },
+    { "endpoint": "https://quay.io", "status_code": 200 },
+    { "endpoint": "https://replicated.app", "status_code": 200 },
+    { "endpoint": "https://auth.docker.io/token", "status_code": 200 },
+    { "endpoint": "https://registry-1.docker.io", "status_code": 200 },
+    { "endpoint": "https://production.cloudflare.docker.com", "status_code": 403 },
+    { "endpoint": "https://files.pythonhosted.org", "status_code": 200 },
+    { "endpoint": "https://pypi.org", "status_code": 200 }
 ]
 
 NTP_EXECUTABLES = [
