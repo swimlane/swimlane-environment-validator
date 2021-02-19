@@ -52,6 +52,7 @@ def main():
 
         logger.debug('Creating temporary directory')
         tmp_path = tempfile.mkdtemp()
+        logger.debug('Temp dir: {}'.format(tmp_path))
         if config.arguments.pip_config:
             try:
                 shutil.copyfile(config.arguments.pip_config, '{}/pip.conf'.format(tmp_path))
