@@ -137,29 +137,19 @@ else:
     FAIL = ''
     ENDC = ''
 
-try:
-    if arguments.enable_listeners:
-        enabled_listeners = True
-except AttributeError:
-    enabled_listeners = False
 
-if enabled_listeners:
-    LB_CONNECTIVITY_ENDPOINTS = [
-        'http://{}:{}/health'.format(arguments.lb_fqdn, arguments.k8s_port),
-        'http://{}:{}/health'.format(arguments.lb_fqdn, arguments.web_port),
-        'http://{}:{}/health'.format(arguments.lb_fqdn, arguments.spi_port)
-    ]
-else:
-    LB_CONNECTIVITY_ENDPOINTS = [
-        'https://{}:{}/livez'.format(arguments.lb_fqdn, arguments.k8s_port),
-        'https://{}:{}/nginx-health'.format(arguments.lb_fqdn, arguments.web_port),
-        'https://{}:{}/healthz'.format(arguments.lb_fqdn, arguments.spi_port)
-    ]
+lb_scheme = "https"
+LB_CONNECTIVITY_ENDPOINTS = [
+    '{}://{}:{}/livez'.format(lb_scheme, arguments.lb_fqdn, arguments.k8s_port),
+    '{}://{}:{}/nginx-health'.format(lb_scheme, arguments.lb_fqdn, arguments.web_port),
+    '{}://{}:{}/healthz'.format(lb_scheme, arguments.lb_fqdn, arguments.spi_port)
+]
 
 LB_CONNECTIVITY_PORTS = [
     arguments.k8s_port,
     arguments.web_port,
-    arguments.spi_port
+    arguments.spi_port,
+    4443
 ]
 
 INTRA_CLUSTER_PORTS = [

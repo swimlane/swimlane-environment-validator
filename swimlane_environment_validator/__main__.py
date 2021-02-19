@@ -77,6 +77,7 @@ def main():
 
         if config.arguments.verify_lb:
             if config.arguments.enable_listeners:
+                http_listener.cert_gen()
                 http_listener.start_lb_listener_threads()
                 logger.info('Sleeping for {} seconds to allow LB to see that we are live'.format(config.arguments.lb_delay_period))
                 time.sleep(config.arguments.lb_delay_period)
@@ -98,6 +99,7 @@ def main():
         table.print_table(check_results['checks'])
 
     if config.arguments.command == 'listener':
+        http_listener.cert_gen()
         http_listener.start_lb_listener_threads()
         http_listener.start_intra_cluster_listener_threads()
         input("Web and Intra-Cluster Listeners are running, press enter to exit.")
