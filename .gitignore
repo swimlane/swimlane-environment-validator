@@ -2,5 +2,6 @@ build/
 dist/
 __pycache__/
 swimlane_environment_validator.spec
+swimlane-environment-validator.spec
 __main__.spec
 swimlane_environment_validator.egg-info

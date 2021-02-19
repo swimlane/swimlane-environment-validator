@@ -90,6 +90,11 @@ if arguments.command == 'version':
     print(__version__.__version__)
     sys.exit(0)
 
+if arguments.command is None:
+    import sys
+    parser.print_help()
+    sys.exit(1)
+
 PUBLIC_ENDPOINTS = [
     "https://get.swimlane.io/nginx-health",
     "https://k8s.kurl.sh",
