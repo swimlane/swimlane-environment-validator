@@ -115,7 +115,8 @@ PUBLIC_ENDPOINTS = [
 
 NTP_EXECUTABLES = [
     "ntpd",
-    "chronyd"
+    "chronyd",
+    "systemd-timesyncd.service"
 ]
 
 UNALLOWED_EXECUTABLES = [
