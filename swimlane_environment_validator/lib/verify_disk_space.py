@@ -39,7 +39,13 @@ def check_directory_size():
         result['Total Space Size'] = total
         result['Percentage Used'] = percentage
 
-        if int(total.replace('G','')) >= int(minimum_size.replace('G','')):
+        # https://github.com/swimlane/swimlane-environment-validator/issues/20
+        # Subtract 3% from the minimum to account for descrepencies in provisioning
+        int_min_size = int(minimum_size.replace('G',''))
+        min_size_adjusted =  int_min_size - (int_min_size * .05)
+        logger.debug('{} is the calculated minimum needed size for {}'.format(min_size_adjusted, directory))
+
+        if int(total.replace('G','')) >= min_size_adjusted:
             logger.info('{} has at least {} worth of space.'.format(directory, minimum_size))
             result['message'] = "-"
             result['minimum'] = minimum_size
