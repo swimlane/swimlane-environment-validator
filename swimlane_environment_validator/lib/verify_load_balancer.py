@@ -33,6 +33,7 @@ def verify_port_connectivity():
             r = requests.get(endpoint, timeout=10, verify=False)
         except:
             logger.error("{} refused the connection..".format(endpoint))
+            logger.debug("Caught exception during LB Check", exc_info=True)
             result['message'] = "{} refused the connection..".format(endpoint)
             result['result'] = "{}Failed{}".format(config.FAIL, config.ENDC)
             results[result_name] = result
