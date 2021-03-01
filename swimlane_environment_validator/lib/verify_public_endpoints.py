@@ -16,6 +16,7 @@ def get_endpoint(endpoint_url, acceptable_status_code):
         r = requests.get(endpoint_url, timeout=10, allow_redirects=False)
     except:
         logger.error('Response from {} timed out or failed after 10s.'.format(endpoint_url))
+        logger.debug("Caught exception during endpoint check", exc_info=True)
         endpoint_result['status_code'] = "-"
         endpoint_result['result'] = "{}Failed{}".format(config.FAIL, config.ENDC)
         return endpoint_result

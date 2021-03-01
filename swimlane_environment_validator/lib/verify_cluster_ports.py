@@ -27,6 +27,7 @@ def verify_port_connectivity():
                 r = requests.get('http://{}:{}/health'.format(fqdn, port), timeout=10)
             except:
                 logger.error("{}:{} refused the connection..".format(fqdn, port))
+                logger.debug("Caught exception during port check ", exc_info=True)
                 result[port] = "{}Failed{}".format(config.FAIL, config.ENDC)
 
             if r.status_code == 200:

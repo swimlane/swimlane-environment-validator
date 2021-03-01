@@ -31,9 +31,9 @@ def serve_on_port(port):
         server = ThreadingHTTPServer(("",port), Handler)
         server.socket = ssl.wrap_socket(server.socket, keyfile='./private.key', certfile='./selfsigned.crt', server_side=True)
         server.serve_forever()
-    except Exception as e:
-        logger.debug(e)
+    except Exception:
         logger.error('Couldnt start listener on port {}, is something already listening? Ports below 1024 can only be spawned by root.'.format(port))
+        logger.debug("Caught exception while starting listener thread ", exc_info=True)
 
 def start_lb_listener_threads():
     for port in config.LB_CONNECTIVITY_PORTS:
