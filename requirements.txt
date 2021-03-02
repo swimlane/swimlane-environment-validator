@@ -3,3 +3,5 @@ pyOpenSSL==19.0.0
 pyinstaller==4.2
 prettytable==2.0.0
 pycryptodome==3.9.9
+Flask==1.1.1
+Click==7.0
