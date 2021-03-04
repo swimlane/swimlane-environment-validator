@@ -3,6 +3,8 @@ import requests
 import swimlane_environment_validator.lib.config as config
 import swimlane_environment_validator.lib.log_handler as log_handler
 
+import swimlane_environment_validator.lib.parse_installer_yaml as parse_installer_yaml
+
 logger = log_handler.setup_logger()
 
 def get_endpoint(endpoint_url, acceptable_status_code):
@@ -13,7 +15,7 @@ def get_endpoint(endpoint_url, acceptable_status_code):
     }
 
     try:
-        r = requests.get(endpoint_url, timeout=10, allow_redirects=False)
+        r = requests.get(endpoint_url, timeout=10, allow_redirects=False, proxies=parse_installer_yaml.get_proxies())
     except:
         logger.error('Response from {} timed out or failed after 10s.'.format(endpoint_url))
         logger.debug("Caught exception during endpoint check", exc_info=True)

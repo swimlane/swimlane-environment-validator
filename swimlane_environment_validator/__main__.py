@@ -14,7 +14,7 @@ import swimlane_environment_validator.lib.verify_load_balancer as verify_load_ba
 import swimlane_environment_validator.lib.verify_pip as verify_pip
 import swimlane_environment_validator.lib.verify_ntp as verify_ntp
 import swimlane_environment_validator.lib.verify_public_endpoints as verify_public_endpoints
-import swimlane_environment_validator.lib.check_proxy_vars as check_proxy_vars
+import swimlane_environment_validator.lib.parse_installer_yaml as parse_installer_yaml
 import swimlane_environment_validator.lib.verify_executables as verify_executables
 import swimlane_environment_validator.lib.verify_cluster_ports as verify_cluster_ports
 import swimlane_environment_validator.lib.verify_tls as verify_tls
@@ -37,9 +37,9 @@ check_results = {
         "public_endpoint_checks": {},
         "ntp_checks": {},
         "hostnamectl_checks": {},
-        "proxy_env_var_checks": {},
         "disallowed_executables": {},
-        "intra_port_connectivity": {}
+        "intra_port_connectivity": {},
+        "http_proxy_config":{}
     }
 }
 
@@ -48,7 +48,9 @@ def main():
 
     if config.arguments.command == 'verify':
 
-        check_results['checks']['proxy_env_var_checks'].update(check_proxy_vars.check_proxy_vars())
+        logger.debug('Installer patch yaml: {}'.format(config.installer_yaml))
+
+        check_results['checks']['http_proxy_config'].update(parse_installer_yaml.verify_installer_yaml_proxies())
 
         logger.debug('Creating temporary directory')
         tmp_path = tempfile.mkdtemp()
