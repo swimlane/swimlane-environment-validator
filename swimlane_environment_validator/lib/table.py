@@ -8,11 +8,10 @@ import swimlane_environment_validator.lib.verify_load_balancer as verify_load_ba
 def print_table(checks):
 
     x = PrettyTable()
-    x.title = 'Environment Info'
-    x.field_names = ['Proxy Var','Value']
-    for k,v in checks['proxy_env_var_checks'].items():
-        row = [*v.values()]
-        row.insert(0,k)
+    x.title = 'Proxy Info'
+    x.field_names = ['Proxy Scheme','Proxy Address']
+    for scheme in checks['http_proxy_config']:
+        row = [scheme, checks['http_proxy_config'][scheme]]
         x.add_row(row)
     print(x.get_string())
 

@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 import os
+import sys
 import argparse
 import socket
+import yaml
 
 def str2bool(v):
     if isinstance(v, bool):
@@ -78,6 +80,9 @@ verify_action.add_argument("--verify-intra-cluster-ports", type=str2bool, defaul
 verify_action.add_argument("--additional-node-fqdn", action='append',
                         help="Node FQDNs. May be specified multiple times for multiple nodes.")
 
+verify_action.add_argument("--installer-patch", type=str, default=False,
+                        help="Validate and use an installer patch file. Supply the same file that you will provide to the `install-spec-file` argument of the installer script.")
+
 listener_action = commands.add_parser('listener', help="Load Balancer Listener daemon.")
 listener_action.add_argument("--lb-fqdn", type=str, default=socket.gethostname(),
                         help="Load Balancer FQDN. Default is the hostname of the node running the verifier script.")
@@ -85,13 +90,11 @@ listener_action.add_argument("--lb-fqdn", type=str, default=socket.gethostname()
 arguments = parser.parse_args()
 
 if arguments.command == 'version':
-    import sys
     from .. import __version__
     print(__version__.__version__)
     sys.exit(0)
 
 if arguments.command is None:
-    import sys
     parser.print_help()
     sys.exit(1)
 
@@ -145,6 +148,15 @@ LB_CONNECTIVITY_ENDPOINTS = [
     '{}://{}:{}/nginx-health'.format(lb_scheme, arguments.lb_fqdn, arguments.web_port),
     '{}://{}:{}/healthz'.format(lb_scheme, arguments.lb_fqdn, arguments.spi_port)
 ]
+
+installer_yaml = False
+if arguments.installer_patch:
+    try:
+        with open(arguments.installer_patch, 'r') as stream:        
+            installer_yaml = yaml.load(stream)
+    except:
+        print('Unable to parse {}, is this valid yaml?'.format(arguments.installer_patch))
+        sys.exit(1)
 
 LB_CONNECTIVITY_PORTS = [
     arguments.k8s_port,
