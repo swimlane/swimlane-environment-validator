@@ -149,14 +149,17 @@ LB_CONNECTIVITY_ENDPOINTS = [
     '{}://{}:{}/healthz'.format(lb_scheme, arguments.lb_fqdn, arguments.spi_port)
 ]
 
-installer_yaml = False
-if arguments.installer_patch:
-    try:
-        with open(arguments.installer_patch, 'r') as stream:        
-            installer_yaml = yaml.load(stream)
-    except:
-        print('Unable to parse {}, is this valid yaml?'.format(arguments.installer_patch))
-        sys.exit(1)
+try:
+    installer_yaml = False
+    if arguments.installer_patch:
+        try:
+            with open(arguments.installer_patch, 'r') as stream:        
+                installer_yaml = yaml.load(stream)
+        except:
+            print('Unable to parse {}, is this valid yaml?'.format(arguments.installer_patch))
+            sys.exit(1)
+except:
+    pass
 
 LB_CONNECTIVITY_PORTS = [
     arguments.k8s_port,
