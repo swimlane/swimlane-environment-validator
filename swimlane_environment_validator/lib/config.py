@@ -83,6 +83,10 @@ verify_action.add_argument("--additional-node-fqdn", action='append',
 verify_action.add_argument("--installer-patch", type=str, default=False,
                         help="Validate and use an installer patch file. Supply the same file that you will provide to the `install-spec-file` argument of the installer script.")
 
+verify_action.add_argument("--proxy-override", type=str, default=False,
+                        help="This string will override the proxy string if one is supplied in the install-spec-file.")
+
+
 listener_action = commands.add_parser('listener', help="Load Balancer Listener daemon.")
 listener_action.add_argument("--lb-fqdn", type=str, default=socket.gethostname(),
                         help="Load Balancer FQDN. Default is the hostname of the node running the verifier script.")
@@ -98,37 +102,6 @@ if arguments.command is None:
     parser.print_help()
     sys.exit(1)
 
-PUBLIC_ENDPOINTS = [
-    { "endpoint": "https://get.swimlane.io/nginx-health", "status_code": 200 },
-    { "endpoint": "https://k8s.kurl.sh", "status_code": 200 },
-    { "endpoint": "https://kurl.sh", "status_code": 200 },
-    { "endpoint": "https://kurl-sh.s3.amazonaws.com/dist/ekco-0.6.0.tar.gz", "status_code": 200 },
-    { "endpoint": "https://registry.replicated.com/v2", "status_code": 301 },
-    { "endpoint": "https://proxy.replicated.com/healthz", "status_code": 200 },
-    { "endpoint": "https://k8s.gcr.io", "status_code": 302 },
-    { "endpoint": "https://storage.googleapis.com", "status_code": 400 },
-    { "endpoint": "https://quay.io", "status_code": 200 },
-    { "endpoint": "https://replicated.app", "status_code": 200 },
-    { "endpoint": "https://auth.docker.io/token", "status_code": 200 },
-    { "endpoint": "https://registry-1.docker.io", "status_code": 200 },
-    { "endpoint": "https://production.cloudflare.docker.com", "status_code": 403 },
-    { "endpoint": "https://files.pythonhosted.org", "status_code": 200 },
-    { "endpoint": "https://pypi.org", "status_code": 200 }
-]
-
-NTP_EXECUTABLES = [
-    "ntpd",
-    "chronyd",
-    "systemd-timesyncd.service"
-]
-
-UNALLOWED_EXECUTABLES = [
-    "docker",
-    "ctr",
-    "containerd",
-    "kubelet"
-]
-
 if arguments.use_color:
     #Terminal ANSI color codes
     OK = '\033[92m'
@@ -140,26 +113,6 @@ else:
     WARNING = ''
     FAIL = ''
     ENDC = ''
-
-
-lb_scheme = "https"
-LB_CONNECTIVITY_ENDPOINTS = [
-    '{}://{}:{}/livez'.format(lb_scheme, arguments.lb_fqdn, arguments.k8s_port),
-    '{}://{}:{}/nginx-health'.format(lb_scheme, arguments.lb_fqdn, arguments.web_port),
-    '{}://{}:{}/healthz'.format(lb_scheme, arguments.lb_fqdn, arguments.spi_port)
-]
-
-try:
-    installer_yaml = False
-    if arguments.installer_patch:
-        try:
-            with open(arguments.installer_patch, 'r') as stream:        
-                installer_yaml = yaml.load(stream)
-        except:
-            print('Unable to parse {}, is this valid yaml?'.format(arguments.installer_patch))
-            sys.exit(1)
-except:
-    pass
 
 LB_CONNECTIVITY_PORTS = [
     arguments.k8s_port,
@@ -182,16 +135,68 @@ INTRA_CLUSTER_PORTS = [
     32767
 ]
 
-# Directory name, minimum space in bytes. Subtract one GB so that a 400GB raw disk is acceptable
-DIRECTORY_SIZES_CHECK = {
-    "/var/openebs": "300G",
-    "/var/lib/docker": "100G",
-    "/opt": "50G",
-    "/": "50G"
-}
+if arguments.command == 'verify':
 
-DIRECTORY_IS_MOUNT_CHECK = [
-    "/var/openebs",
-    "/var/lib/docker",
-    "/opt"
-]
+    installer_yaml = False
+    if arguments.installer_patch:
+        try:
+            with open(arguments.installer_patch, 'r') as stream:        
+                installer_yaml = yaml.load(stream)
+        except:
+            print('Unable to parse {}, is this valid yaml?'.format(arguments.installer_patch))
+            sys.exit(1)
+
+    PUBLIC_ENDPOINTS = [
+        { "endpoint": "https://get.swimlane.io/nginx-health", "status_code": 200 },
+        { "endpoint": "https://k8s.kurl.sh", "status_code": 200 },
+        { "endpoint": "https://kurl.sh", "status_code": 200 },
+        { "endpoint": "https://kurl-sh.s3.amazonaws.com/dist/ekco-0.6.0.tar.gz", "status_code": 200 },
+        { "endpoint": "https://registry.replicated.com/v2", "status_code": 301 },
+        { "endpoint": "https://proxy.replicated.com/healthz", "status_code": 200 },
+        { "endpoint": "https://k8s.gcr.io", "status_code": 302 },
+        { "endpoint": "https://storage.googleapis.com", "status_code": 400 },
+        { "endpoint": "https://quay.io", "status_code": 200 },
+        { "endpoint": "https://replicated.app", "status_code": 200 },
+        { "endpoint": "https://auth.docker.io/token", "status_code": 200 },
+        { "endpoint": "https://registry-1.docker.io", "status_code": 200 },
+        { "endpoint": "https://production.cloudflare.docker.com", "status_code": 403 },
+        { "endpoint": "https://files.pythonhosted.org", "status_code": 200 },
+        { "endpoint": "https://pypi.org", "status_code": 200 }
+    ]
+
+    NTP_EXECUTABLES = [
+        "ntpd",
+        "chronyd",
+        "systemd-timesyncd.service"
+    ]
+
+    UNALLOWED_EXECUTABLES = [
+        "docker",
+        "ctr",
+        "containerd",
+        "kubelet"
+    ]
+
+    lb_scheme = "https"
+    LB_CONNECTIVITY_ENDPOINTS = [
+        '{}://{}:{}/livez'.format(lb_scheme, arguments.lb_fqdn, arguments.k8s_port),
+        '{}://{}:{}/nginx-health'.format(lb_scheme, arguments.lb_fqdn, arguments.web_port),
+        '{}://{}:{}/healthz'.format(lb_scheme, arguments.lb_fqdn, arguments.spi_port)
+    ]
+
+    # Directory name, minimum space in bytes. Subtract one GB so that a 400GB raw disk is acceptable
+    DIRECTORY_SIZES_CHECK = {
+        "/var/openebs": "300G",
+        "/var/lib/docker": "100G",
+        "/opt": "50G",
+        "/": "50G"
+    }
+
+    DIRECTORY_IS_MOUNT_CHECK = [
+        "/var/openebs",
+        "/var/lib/docker",
+        "/opt"
+    ]
+
+if arguments.command == 'listener':
+    pass
