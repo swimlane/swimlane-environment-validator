@@ -5,4 +5,4 @@ prettytable==2.0.0
 pycryptodome==3.9.9
 Flask==1.1.1
 Click==7.0
-PyYAML==4.2b1
+pyyaml>=5.4
