@@ -188,6 +188,7 @@ if arguments.command == 'verify':
     DIRECTORY_SIZES_CHECK = {
         "/var/openebs": "300G",
         "/var/lib/docker": "100G",
+        "/var/lib/kubelet": "100G",
         "/opt": "50G",
         "/": "50G"
     }
@@ -195,6 +196,7 @@ if arguments.command == 'verify':
     DIRECTORY_IS_MOUNT_CHECK = [
         "/var/openebs",
         "/var/lib/docker",
+        "/var/lib/kubelet",
         "/opt"
     ]
 
