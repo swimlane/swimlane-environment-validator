@@ -158,7 +158,7 @@ if arguments.command == 'verify':
         { "endpoint": "https://quay.io", "status_code": 200 },
         { "endpoint": "https://replicated.app", "status_code": 200 },
         { "endpoint": "https://auth.docker.io/token", "status_code": 200 },
-        { "endpoint": "https://registry-1.docker.io", "status_code": 200 },
+        { "endpoint": "https://registry-1.docker.io", "status_code": 404 },
         { "endpoint": "https://production.cloudflare.docker.com", "status_code": 403 },
         { "endpoint": "https://files.pythonhosted.org", "status_code": 200 },
         { "endpoint": "https://pypi.org", "status_code": 200 }
