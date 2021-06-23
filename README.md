@@ -17,6 +17,8 @@ From this node, run the executable:
 $ ./swimlane-environment-validator verify --lb-fqdn <loadbalancer address>
 ```
 
+For offline install there is an `--offline` flag that will disable any online checks.
+
 
 ## Known Issues:
 * The verify-pip check requires outside binaries, python3 and venv.
