@@ -54,7 +54,7 @@ verify_action.add_argument("--verify-public-endpoints", type=str2bool, default=T
 verify_action.add_argument("--verify-executables", type=str2bool, default=True,
                         help="Verify if any disallowed executables are installed.")
 
-verify_action.add_argument("--verify-pip", type=str2bool, default=True,
+verify_action.add_argument("--verify-pip", type=str2bool, default=False,
                         help="Test connectivity to PyPi. Requires pip and virtualenv to be installed.")
 
 verify_action.add_argument("--verify-ntp", type=str2bool, default=True,
