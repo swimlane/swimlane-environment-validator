@@ -189,6 +189,7 @@ if arguments.command == 'verify':
         "/var/openebs": "300G",
         "/var/lib/docker": "100G",
         "/var/lib/kubelet": "100G",
+        "/var/lib/kurl": "10G",
         "/opt": "50G",
         "/": "50G"
     }
