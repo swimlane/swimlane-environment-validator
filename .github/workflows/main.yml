@@ -37,10 +37,10 @@ jobs:
         run: |
           if [ $GITHUB_EVENT_NAME = "pull_request" ]; then
              echo ::set-output name=tag::${GITHUB_HEAD_REF}
-             sed "s|placeholder|git+${GITHUB_SHA}|g" swimlane_environment_validator/__version__.py
+             sed -i "s|placeholder|git+${GITHUB_SHA}|g" swimlane_environment_validator/__version__.py
           else
              echo ::set-output name=tag::${GITHUB_REF#refs/*/}
-             sed "s|placeholder|${GITHUB_REF#refs/*/}|g" swimlane_environment_validator/__version__.py
+             sed -i "s|placeholder|${GITHUB_REF#refs/*/}|g" swimlane_environment_validator/__version__.py
           fi
 
       - name: Install Requirements
