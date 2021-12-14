@@ -29,7 +29,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v2
         with:
-          python-version: '3.x'
+          python-version: '3.10.1'
           architecture: 'x64'
 
       - name: Set output
@@ -37,8 +37,10 @@ jobs:
         run: |
           if [ $GITHUB_EVENT_NAME = "pull_request" ]; then
              echo ::set-output name=tag::${GITHUB_HEAD_REF}
+             sed -i "s|placeholder|git+${GITHUB_SHA}|g" swimlane_environment_validator/__version__.py
           else
              echo ::set-output name=tag::${GITHUB_REF#refs/*/}
+             sed -i "s|placeholder|${GITHUB_REF#refs/*/}|g" swimlane_environment_validator/__version__.py
           fi
 
       - name: Install Requirements
