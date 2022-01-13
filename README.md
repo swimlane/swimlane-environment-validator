@@ -8,6 +8,24 @@ This script if highly configurable with various options to skip checks. Most che
 
 ## How to use
 
+If preparing for a new Swimlane installation.
+
+For CentOS / Red Hat:
+yum -y install centos-release-scl wget
+yum -y install rh-python36
+scl enable rh-python36 bash
+
+For Ubuntu:
+apt -y install build-essential libssl-dev libffi-dev python-dev
+apt -y install python3-pip
+pip install virtualenv
+
+And finally, for either Ubuntu or CentOS / Red Hat:
+wget https://github.com/swimlane/swimlane-environment-validator/releases/download/0.5.2/swimlane-environment-validator
+chmod +x ./swimlane-environment-validator
+./swimlane-environment-validator verify
+
+General Use:
 Download and extract the binary, and make it executable.
 
 Add a single node to your load balancer to ensure the other nodes do not interfere with testing.
