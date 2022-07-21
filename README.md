@@ -26,7 +26,7 @@ pip install virtualenv
 
 And finally, for either Ubuntu or CentOS / Red Hat:
 ```
-wget https://github.com/swimlane/swimlane-environment-validator/releases/download/0.5.2/swimlane-environment-validator
+wget https://github.com/swimlane/swimlane-environment-validator/releases/download/0.5.3/swimlane-environment-validator
 chmod +x ./swimlane-environment-validator
 ./swimlane-environment-validator verify
 ```
